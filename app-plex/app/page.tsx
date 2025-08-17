@@ -120,15 +120,15 @@ export default function Home() {
               <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
                 <Code className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">TechFlow</span>
+              <span className="text-xl font-bold text-gray-900">App-Plex</span>
             </div>
             
             <nav className="hidden md:flex items-center space-x-8">
               <a href="#services" className="text-gray-700 hover:text-purple-600 transition-colors">Services</a>
               <a href="#about" className="text-gray-700 hover:text-purple-600 transition-colors">About</a>
-              <a href="#process" className="text-gray-700 hover:text-purple-600 transition-colors">Process</a>
+              <a href="#process" className="text-gray-700 hover:text-purple-600 transition-colors">Projects</a>
               <a href="#contact" className="text-gray-700 hover:text-purple-600 transition-colors">Contact</a>
-              <Button className="bg-purple-600 hover:bg-purple-700">Get Started</Button>
+              <Button className="bg-purple-600 hover:bg-purple-700">Let'Talk</Button>
             </nav>
 
             <button 
