@@ -120,7 +120,7 @@ export default function Home() {
               <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
                 <Code className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">TechFlow</span>
+              <span className="text-xl font-bold text-gray-900">App Plex</span>
             </div>
             
             <nav className="hidden md:flex items-center space-x-8">
@@ -396,7 +396,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center space-x-3">
                   <Mail className="h-5 w-5" />
-                  <span>hello@techflow.com</span>
+                  <span>hello@App Plex.com</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <MapPin className="h-5 w-5" />
@@ -445,7 +445,7 @@ export default function Home() {
                 <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
                   <Code className="h-5 w-5 text-white" />
                 </div>
-                <span className="text-xl font-bold">TechFlow</span>
+                <span className="text-xl font-bold">App Plex</span>
               </div>
               <p className="text-gray-400">
                 Delivering innovative software solutions for businesses worldwide.
@@ -486,7 +486,7 @@ export default function Home() {
 
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-gray-400 text-sm">
-              © 2024 TechFlow. All rights reserved.
+              © 2024 App Plex. All rights reserved.
             </div>
             <div className="flex space-x-6 text-gray-400 text-sm mt-4 md:mt-0">
               <span>Privacy Policy</span>
