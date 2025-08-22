@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1, viewport-fit=cover" />
+  <title>App Plex — Classy Google-style</title>
+  <meta name="description" content="Building digital experiences that inspire. Web, mobile, and eCommerce development with world-class design." />
+
+  <!-- Google Fonts: Roboto + Material Symbols Rounded -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- FIXED: Apply theme immediately to prevent flash of wrong theme -->
+  <script>
+    (function () {
+      const stored = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = stored || (prefersDark ? 'dark' : 'light');
+      const root = document.documentElement;
+      root.classList.add(theme); // Don't remove, just add the correct one
+      root.style.colorScheme = theme;
+    })();
+  </script>
+
+  <!-- Tailwind CSS (CDN + typography plugin) -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <script>
+    // FIXED: Ensure darkMode is set to 'class'
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          container: { center: true, padding: { DEFAULT: '1rem', lg: '2rem' } },
+          colors: {
+            gblue: { DEFAULT: '#1a73e8', hover: '#1765d1', dark: '#8ab4f8' },
+            gsurface: { light: '#ffffff', dark: '#0f1115' }
+          },
+          fontFamily: {
+            sans: ['Roboto', 'Noto Sans', 'system-ui', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif']
+          },
+          borderRadius: { pill: '9999px' },
+          boxShadow: {
+            'google': '0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1)',
+            'google-lg': '0 4px 12px rgba(0,0,0,.08)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-accent: radial-gradient(1200px 600px at 10% 0%, rgba(26,115,232,0.10), transparent 60%),
+                   radial-gradient(1000px 500px at 90% 10%, rgba(138,180,248,0.10), transparent 60%);
+    }
+    html.dark { color-scheme: dark; }
+
+    /* Material Symbols must explicitly use the font family */
+    .material-symbols-rounded {
+      font-family: 'Material Symbols Rounded';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+
+    /* Hero background accent */
+    .hero-accent {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-accent);
+      pointer-events: none;
+      z-index: 0;
+      mask-image: linear-gradient(to bottom, rgba(255,255,255,1) 30%, rgba(255,255,255,0));
+    }
+    .dark .hero-accent {
+      mask-image: linear-gradient(to bottom, rgba(15,17,21,1) 30%, rgba(15,17,21,0));
+    }
+
+    /* Surfaces */
+    .surface {
+      background-color: rgba(255,255,255,0.92);
+      backdrop-filter: saturate(1.3) blur(6px);
+    }
+    .dark .surface {
+      background-color: rgba(16,18,24,0.65);
+      backdrop-filter: saturate(1.2) blur(8px);
+    }
+
+    /* Animations */
+    .reveal { opacity: 0; transform: translateY(16px); }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px);} to { opacity: 1; transform: translateY(0);} }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-6px);} to { opacity: 1; transform: translateY(0);} }
+    @keyframes pop { from { opacity: 0; transform: scale(.96);} to { opacity: 1; transform: scale(1);} }
+    @keyframes floatY { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-4px);} }
+
+    .anim-fade-up { animation: fadeUp .5s ease forwards; }
+    .anim-pop { animation: pop .35s ease forwards; }
+    .anim-slide-down { animation: slideDown .18s ease forwards; }
+    .anim-float { animation: floatY 4s ease-in-out infinite; }
+
+    /* Button ripple */
+    .ripple-container { position: relative; overflow: hidden; }
+    .ripple {
+      position: absolute; border-radius: 9999px; transform: translate(-50%, -50%);
+      pointer-events: none; background: rgba(255,255,255,.5); width: 10px; height: 10px; opacity: 0;
+      animation: ripple .6s ease-out;
+    }
+    .dark .ripple { background: rgba(255,255,255,.35); }
+    @keyframes ripple {
+      0% { opacity: .45; transform: translate(-50%, -50%) scale(.8); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(18); }
+    }
+
+    /* Misc */
+    * { -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+
+<body class="bg-gsurface-light dark:bg-gsurface-dark text-gray-900 dark:text-gray-100 font-sans antialiased selection:bg-gblue/20">
+  <!-- Scroll progress -->
+  <div id="scrollProgress" class="fixed top-0 left-0 h-0.5 bg-gblue z-[60] w-0"></div>
+
+  <!-- Header -->
+  <header id="siteHeader" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+    <div class="container">
+      <div class="flex items-center justify-between h-16 md:h-[68px]">
+        <a href="#" id="brandLink" class="text-xl md:text-[22px] font-semibold tracking-tight text-gray-900 dark:text-white">
+          App <span class="text-gblue dark:text-gblue-dark">Plex</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-1">
+          <!-- Services Dropdown -->
+          <div class="relative" id="servicesWrapper">
+            <button id="servicesBtn" class="text-gray-800 dark:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-white/5 px-3 py-2 rounded-pill text-sm font-medium transition-colors flex items-center gap-1" aria-haspopup="true" aria-expanded="false">
+              Services <span class="material-symbols-rounded text-[18px]">expand_more</span>
+            </button>
+            <div id="servicesDropdown" class="absolute top-full left-0 mt-2 w-[580px] max-w-[92vw] opacity-0 pointer-events-none">
+              <div class="surface rounded-2xl shadow-google-lg border border-gray-200/70 dark:border-white/10">
+                <div id="servicesDropdownGrid" class="grid grid-cols-2 gap-2 p-3">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a href="#projects" data-nav="projects" class="text-gray-800 dark:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-white/5 px-3 py-2 rounded-pill text-sm font-medium transition-colors">Projects</a>
+          <a href="#about" data-nav="about" class="text-gray-800 dark:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-white/5 px-3 py-2 rounded-pill text-sm font-medium transition-colors">About</a>
+          <a href="#" data-nav="blog" class="text-gray-800 dark:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-white/5 px-3 py-2 rounded-pill text-sm font-medium transition-colors">Blog</a>
+          <a href="#" data-nav="contact" class="text-gray-800 dark:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-white/5 px-3 py-2 rounded-pill text-sm font-medium transition-colors">Contact</a>
+        </nav>
+
+        <div class="flex items-center">
+          <!-- Theme toggle -->
+          <button id="themeToggle" class="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100/80 dark:hover:bg-white/5 focus:outline-none mr-1.5" aria-label="Toggle theme">
+            <span id="iconLight" class="material-symbols-rounded">light_mode</span>
+            <span id="iconDark" class="material-symbols-rounded hidden">dark_mode</span>
+          </button>
+          <!-- Mobile menu button -->
+          <div class="md:hidden">
+            <button id="mobileMenuBtn" class="p-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100/80 dark:hover:bg-white/5" aria-label="Toggle menu" aria-expanded="false">
+              <span id="iconMenu" class="material-symbols-rounded">menu</span>
+              <span id="iconClose" class="material-symbols-rounded hidden">close</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="md:hidden hidden bg-white/95 dark:bg-gsurface-dark/95 backdrop-blur border-b border-gray-200/70 dark:border-white/10">
+      <div class="container px-2 pt-2 pb-3 space-y-1">
+        <a href="#" data-nav="home" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-100/80 dark:hover:bg-white/5">Home</a>
+        <details class="px-3 py-2 rounded-xl">
+          <summary class="cursor-pointer text-gray-900 dark:text-gray-100 hover:text-gblue dark:hover:text-gblue-dark font-medium">Services</summary>
+          <ul id="mobileServicesList" class="mt-2 pl-2 space-y-1">
+            <!-- populated by JS -->
+          </ul>
+        </details>
+        <a href="#projects" data-nav="projects" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-100/80 dark:hover:bg-white/5">Projects</a>
+        <a href="#about" data-nav="about" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-100/80 dark:hover:bg-white/5">About</a>
+        <a href="#" data-nav="blog" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-100/80 dark:hover:bg-white/5">Blog</a>
+        <a href="#" data-nav="contact" class="block px-3 py-2 rounded-xl text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-100/80 dark:hover:bg-white/5">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-[64px] md:pt-[76px]">
+    <!-- HOME PAGE -->
+    <div id="page-home" class="page relative overflow-hidden">
+      <!-- Hero -->
+      <section class="relative py-16 md:py-24">
+        <div class="hero-accent"></div>
+        <div class="container relative z-[1] text-center">
+          <h1 class="reveal text-[32px] md:text-[46px] leading-[1.12] font-semibold tracking-tight text-gray-900 dark:text-white" data-anim="fade">
+            Build <span class="text-gblue dark:text-gblue-dark">delightful products</span> with a world‑class team
+          </h1>
+          <p class="reveal mt-4 max-w-2xl mx-auto text-[17px] md:text-[18px] text-gray-600 dark:text-gray-400" data-anim="fade">
+            Web, mobile, and eCommerce solutions crafted for performance, accessibility, and polish.
+          </p>
+          <div class="reveal mt-8 flex flex-col sm:flex-row justify-center items-center gap-3" data-anim="fade">
+            <a href="#" data-nav="contact" data-ripple class="inline-flex items-center gap-2 bg-gblue hover:bg-gblue-hover text-white font-medium py-2.5 px-5 rounded-pill shadow-google">
+              <span class="material-symbols-rounded text-[20px]">mail</span> Get a quote
+            </a>
+            <a href="#projects" data-nav="projects" data-ripple class="inline-flex items-center gap-2 bg-gray-100 dark:bg-white/5 hover:bg-gray-200/80 dark:hover:bg-white/10 text-gray-900 dark:text-gray-100 font-medium py-2.5 px-5 rounded-pill">
+              <span class="material-symbols-rounded text-[20px]">play_circle</span> See our work
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section id="services" class="py-14 md:py-16">
+        <div class="container">
+          <div class="text-center mb-8 md:mb-10">
+            <h2 class="reveal text-3xl md:text-[34px] font-semibold tracking-tight text-gray-900 dark:text-white" data-anim="fade">What we do</h2>
+            <p class="reveal mt-3 text-[16px] md:text-[17px] text-gray-600 dark:text-gray-400 max-w-2xl mx-auto" data-anim="fade">
+              Focused capabilities to ship faster without compromising quality.
+            </p>
+          </div>
+          <div id="servicesGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <!-- populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects" class="py-14 md:py-16 bg-gray-50 dark:bg-[#111318]">
+        <div class="container">
+          <div class="text-center mb-8 md:mb-10">
+            <h2 class="reveal text-3xl md:text-[34px] font-semibold tracking-tight text-gray-900 dark:text-white" data-anim="fade">Recent work</h2>
+            <p class="reveal mt-3 text-[16px] md:text-[17px] text-gray-600 dark:text-gray-400 max-w-2xl mx-auto" data-anim="fade">
+              A snapshot of products we’ve shipped.
+            </p>
+          </div>
+          <div class="grid lg:grid-cols-3 gap-4 md:gap-6">
+            <div class="reveal group relative overflow-hidden rounded-2xl bg-white dark:bg-white/5 border border-gray-200/70 dark:border-white/10 shadow-google transition-all hover:shadow-google-lg" data-anim="pop">
+              <img src="https://placehold.co/800x600/1a73e8/ffffff?text=Fintech+App" alt="Fintech Mobile App" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+              <div class="absolute inset-x-0 bottom-0 p-4">
+                <p class="text-sm text-gray-700 dark:text-gray-300">Mobile Development</p>
+                <h3 class="text-xl font-medium text-gray-900 dark:text-white mt-0.5">Fintech Mobile App</h3>
+              </div>
+            </div>
+            <div class="reveal group relative overflow-hidden rounded-2xl bg-white dark:bg-white/5 border border-gray-200/70 dark:border-white/10 shadow-google transition-all hover:shadow-google-lg" data-anim="pop">
+              <img src="https://placehold.co/800x600/10b981/ffffff?text=SaaS+Dashboard" alt="SaaS Platform Dashboard" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+              <div class="absolute inset-x-0 bottom-0 p-4">
+                <p class="text-sm text-gray-700 dark:text-gray-300">Web Development</p>
+                <h3 class="text-xl font-medium text-gray-900 dark:text-white mt-0.5">SaaS Platform Dashboard</h3>
+              </div>
+            </div>
+            <div class="reveal group relative overflow-hidden rounded-2xl bg-white dark:bg-white/5 border border-gray-200/70 dark:border-white/10 shadow-google transition-all hover:shadow-google-lg" data-anim="pop">
+              <img src="https://placehold.co/800x600/f59e0b/ffffff?text=Marketplace" alt="eCommerce Marketplace" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+              <div class="absolute inset-x-0 bottom-0 p-4">
+                <p class="text-sm text-gray-700 dark:text-gray-300">eCommerce</p>
+                <h3 class="text-xl font-medium text-gray-900 dark:text-white mt-0.5">Marketplace</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section id="about" class="py-14 md:py-16">
+        <div class="container">
+          <div class="grid lg:grid-cols-2 gap-8 md:gap-10 items-center">
+            <div class="reveal" data-anim="fade">
+              <h2 class="text-3xl md:text-[34px] font-semibold tracking-tight text-gray-900 dark:text-white">The team behind your next big win</h2>
+              <p class="mt-3 text-[16px] md:text-[17px] text-gray-600 dark:text-gray-400">
+                Designers, engineers, and product folks working in lockstep to ship quality software. Pragmatic, fast, and user‑obsessed.
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-3 md:gap-4">
+              <div class="reveal bg-gray-50 dark:bg-white/5 p-5 rounded-2xl border border-gray-200/70 dark:border-white/10 text-center" data-anim="pop">
+                <span class="material-symbols-rounded text-gblue dark:text-gblue-dark text-[28px] mb-1 inline-block">groups</span>
+                <p class="text-2xl font-semibold text-gray-900 dark:text-white">150+</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400">Projects</p>
+              </div>
+              <div class="reveal bg-gray-50 dark:bg-white/5 p-5 rounded-2xl border border-gray-200/70 dark:border-white/10 text-center" data-anim="pop">
+                <span class="material-symbols-rounded text-gblue dark:text-gblue-dark text-[28px] mb-1 inline-block">track_changes</span>
+                <p class="text-2xl font-semibold text-gray-900 dark:text-white">98%</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400">Satisfaction</p>
+              </div>
+              <div class="reveal bg-gray-50 dark:bg-white/5 p-5 rounded-2xl border border-gray-200/70 dark:border-white/10 text-center" data-anim="pop">
+                <span class="material-symbols-rounded text-gblue dark:text-gblue-dark text-[28px] mb-1 inline-block">domain</span>
+                <p class="text-2xl font-semibold text-gray-900 dark:text-white">10+</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400">Years</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="py-14 md:py-16 bg-gblue dark:bg-[#1b63c3]">
+        <div class="container text-center">
+          <h2 class="reveal text-[26px] md:text-[30px] font-semibold text-white" data-anim="fade">Ready to build something great?</h2>
+          <p class="reveal mt-2 text-white/90 text-[16px]" data-anim="fade">Tell us about your idea — we’ll help make it real.</p>
+          <a href="#" data-nav="contact" data-ripple class="reveal inline-flex items-center gap-2 bg-white text-gblue font-medium py-2.5 px-5 rounded-pill mt-6 shadow-google hover:bg-white/95" data-anim="pop">
+            <span class="material-symbols-rounded text-[20px]">send</span> Get in touch
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- BLOG PAGE -->
+    <div id="page-blog" class="page hidden">
+      <div class="pt-10 md:pt-14">
+        <div class="container py-6 text-center">
+          <h1 class="text-[30px] md:text-[34px] font-semibold tracking-tight text-gray-900 dark:text-white">From the blog</h1>
+          <p class="mt-2 text-[16px] text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Insights and notes on building software.</p>
+        </div>
+      </div>
+      <div class="py-8 md:py-10 bg-gray-50 dark:bg-[#111318]">
+        <div class="container">
+          <div class="grid lg:grid-cols-4 gap-6 md:gap-8">
+            <div class="lg:col-span-3 grid md:grid-cols-2 gap-6" id="blogPostsGrid"></div>
+            <aside class="lg:col-span-1">
+              <div class="sticky top-24">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Categories</h3>
+                <ul class="space-y-1" id="blogCategories"></ul>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT PAGE -->
+    <div id="page-contact" class="page hidden">
+      <div class="pt-10 md:pt-14">
+        <div class="container py-6 text-center">
+          <h1 class="text-[30px] md:text-[34px] font-semibold tracking-tight text-gray-900 dark:text-white">Get in touch</h1>
+          <p class="mt-2 text-[16px] text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">We’d love to hear about your project.</p>
+        </div>
+      </div>
+      <div class="py-10 bg-gray-50 dark:bg-[#111318]">
+        <div class="container">
+          <div class="grid lg:grid-cols-2 gap-6 md:gap-8 items-start">
+            <div class="reveal" data-anim="fade">
+              <h2 class="text-xl font-medium text-gray-900 dark:text-white mb-4">Contact information</h2>
+              <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                  <span class="material-symbols-rounded text-gblue dark:text-gblue-dark">location_on</span>
+                  <p class="text-gray-700 dark:text-gray-300">123 Tech Avenue, Innovation City, 10101</p>
+                </div>
+                <div class="flex items-start gap-3">
+                  <span class="material-symbols-rounded text-gblue dark:text-gblue-dark">alternate_email</span>
+                  <p class="text-gray-700 dark:text-gray-300">contact@appplex.com</p>
+                </div>
+                <div class="flex items-start gap-3">
+                  <span class="material-symbols-rounded text-gblue dark:text-gblue-dark">call</span>
+                  <p class="text-gray-700 dark:text-gray-300">+1 (555) 123-4567</p>
+                </div>
+              </div>
+              <div class="mt-6 h-56 bg-white dark:bg-white/5 rounded-2xl border border-gray-200/70 dark:border-white/10 flex items-center justify-center">
+                <p class="text-gray-500 dark:text-gray-400">[Map Placeholder]</p>
+              </div>
+            </div>
+
+            <form id="contactForm" class="reveal space-y-5 bg-white dark:bg-white/5 p-6 rounded-2xl border border-gray-200/70 dark:border-white/10" data-anim="pop">
+              <div>
+                <label for="name" class="text-sm font-medium text-gray-800 dark:text-gray-200">Full name</label>
+                <input id="name" required class="mt-1 w-full bg-white dark:bg-transparent border border-gray-300 dark:border-white/15 text-gray-900 dark:text-gray-100 rounded-xl p-3 focus:ring-2 focus:ring-gblue focus:border-gblue outline-none" />
+              </div>
+              <div>
+                <label for="email" class="text-sm font-medium text-gray-800 dark:text-gray-200">Email address</label>
+                <input id="email" type="email" required class="mt-1 w-full bg-white dark:bg-transparent border border-gray-300 dark:border-white/15 text-gray-900 dark:text-gray-100 rounded-xl p-3 focus:ring-2 focus:ring-gblue focus:border-gblue outline-none" />
+              </div>
+              <div>
+                <label for="message" class="text-sm font-medium text-gray-800 dark:text-gray-200">Project description</label>
+                <textarea id="message" rows="4" required class="mt-1 w-full bg-white dark:bg-transparent border border-gray-300 dark:border-white/15 text-gray-900 dark:text-gray-100 rounded-xl p-3 focus:ring-2 focus:ring-gblue focus:border-gblue outline-none"></textarea>
+              </div>
+              <button type="submit" data-ripple class="w-full inline-flex items-center justify-center gap-2 bg-gblue hover:bg-gblue-hover text-white font-medium py-2.5 px-5 rounded-pill shadow-google">
+                <span class="material-symbols-rounded text-[20px]">send</span> Send message
+              </button>
+              <p id="contactStatus" class="text-center text-green-600 dark:text-green-400 hidden"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICE DETAIL PAGE -->
+    <div id="page-service" class="page hidden">
+      <div class="pt-10 md:pt-14">
+        <div class="container py-6 text-center">
+          <div id="serviceIcon" class="mb-2 anim-float"></div>
+          <h1 id="serviceTitle" class="text-[28px] md:text-[32px] font-semibold tracking-tight text-gray-900 dark:text-white"></h1>
+          <p id="serviceDesc" class="mt-2 text-[16px] text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"></p>
+        </div>
+      </div>
+      <div class="py-10 bg-gray-50 dark:bg-[#111318]">
+        <div class="container max-w-3xl">
+          <div id="serviceContent" class="prose dark:prose-invert"></div>
+          <a href="#" data-nav="contact" data-ripple class="inline-flex items-center gap-2 bg-gblue hover:bg-gblue-hover text-white font-medium py-2.5 px-5 rounded-pill mt-8 shadow-google">
+            <span class="material-symbols-rounded text-[20px]">chat</span> Discuss your project
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white dark:bg-gsurface-dark border-t border-gray-200/70 dark:border-white/10">
+    <div class="container py-10">
+      <div class="grid md:grid-cols-4 gap-6">
+        <div class="md:col-span-2">
+          <a href="#" data-nav="home" class="text-xl md:text-[22px] font-semibold tracking-tight text-gray-900 dark:text-white">
+            App <span class="text-gblue dark:text-gblue-dark">Plex</span>
+          </a>
+          <p class="mt-3 text-gray-700 dark:text-gray-300 max-w-md">
+            We design and build delightful digital products for startups and enterprises.
+          </p>
+
+          <div class="flex flex-wrap gap-2 mt-5">
+            <!-- FIXED: Corrected Tailwind typo 'dark:hover:bg:white/10' -->
+            <a href="#" data-ripple class="inline-flex items-center gap-1.5 px-3 py-2 rounded-pill bg-gray-100 dark:bg-white/5 text-gray-800 dark:text-gray-200 hover:bg-gray-200/80 dark:hover:bg-white/10 text-sm">
+              <span class="material-symbols-rounded text-[18px]">public</span> Website
+            </a>
+            <a href="#" data-ripple class="inline-flex items-center gap-1.5 px-3 py-2 rounded-pill bg-gray-100 dark:bg-white/5 text-gray-800 dark:text-gray-200 hover:bg-gray-200/80 dark:hover:bg-white/10 text-sm">
+              <span class="material-symbols-rounded text-[18px]">alternate_email</span> Social
+            </a>
+            <a href="#" data-ripple class="inline-flex items-center gap-1.5 px-3 py-2 rounded-pill bg-gray-100 dark:bg-white/5 text-gray-800 dark:text-gray-200 hover:bg-gray-200/80 dark:hover:bg-white/10 text-sm">
+              <span class="material-symbols-rounded text-[18px]">open_in_new</span> Careers
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <!-- FIXED: Corrected Tailwind typo 'dark:text:white' -->
+          <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-2">Company</h4>
+          <ul class="space-y-1">
+            <li><a href="#about" data-nav="about" class="text-gray-700 dark:text-gray-300 hover:text-gblue dark:hover:text-gblue-dark">About</a></li>
+            <li><a href="#" data-nav="blog" class="text-gray-700 dark:text-gray-300 hover:text-gblue dark:hover:text-gblue-dark">Blog</a></li>
+            <li><a href="#" data-nav="contact" class="text-gray-700 dark:text-gray-300 hover:text-gblue dark:hover:text-gblue-dark">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <!-- FIXED: Corrected Tailwind typo 'dark:text:white' -->
+          <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-2">Services</h4>
+          <ul id="footerServices" class="space-y-1"></ul>
+        </div>
+      </div>
+
+      <div class="mt-8 pt-5 border-t border-gray-200/70 dark:border-white/10 text-sm text-gray-600 dark:text-gray-400">
+        © <span id="year"></span> App Plex. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Data (Material Symbols icon names)
+    const servicesData = [
+      { slug: 'web-development',      icon: 'code',              title: 'Web Development',      description: 'High-performance web apps tailored to your needs.', details: 'Our web development team builds robust, scalable, and secure web applications. We leverage modern frameworks to create seamless digital experiences that delight users and move business metrics.' },
+      { slug: 'frontend-development',  icon: 'design_services',   title: 'Frontend Development', description: 'Intuitive user interfaces with modern frameworks.', details: 'We create beautiful and responsive user interfaces. Our expertise in React, Next.js, and Vue ensures your app is fast, accessible, and engaging across devices.' },
+      { slug: 'backend-development',   icon: 'dns',               title: 'Backend Development',  description: 'Robust and scalable server-side logic and APIs.', details: 'We build powerful server-side applications, databases, and APIs using Node.js, Python, and Go — with reliability, performance, and security in mind.' },
+      { slug: 'ecommerce-development', icon: 'shopping_cart',     title: 'eCommerce Development',description: 'Powerful online stores that drive sales.', details: 'We create feature-rich eCommerce platforms that deliver smooth shopping experiences and operational efficiency — with payments, analytics, and custom integrations.' },
+      { slug: 'mobile-development',    icon: 'smartphone',        title: 'Mobile Development',   description: 'Native and cross-platform apps for iOS & Android.', details: 'From concept to launch, we build intuitive, performant, and visually polished apps for iOS and Android — using native or cross‑platform stacks.' },
+      { slug: 'product-design',        icon: 'search',            title: 'Product Design',       description: 'From wireframes to high-fidelity prototypes.', details: 'User research, UX, UI, and prototyping — our design process crafts products that are as useful as they are beautiful.' },
+    ];
+
+    const blogPostsData = [
+      { slug: 'e-commerce-migration', title: 'Signs Your E‑Commerce Business Needs A Platform Migration', image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+1', category: 'E‑Commerce',      date: 'Aug 18, 2025', author: 'Jane Doe' },
+      { slug: 'magento-support-end',  title: 'Magento 2.4.5 End of Support: What It Means',               image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+2', category: 'Magento',         date: 'Aug 15, 2025', author: 'John Smith' },
+      { slug: 'python-versatility',   title: 'The Versatility of Python — Why It’s So Popular',           image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+3', category: 'Python',          date: 'Aug 12, 2025', author: 'Alex Johnson' },
+      { slug: 'eu-cybersecurity-act', title: 'Is Your E‑commerce Ready for the EU’s New Act?',            image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+4', category: 'Security',        date: 'Aug 10, 2025', author: 'Emily White' },
+      { slug: 'headless-cms-benefits',title: 'Unlocking Flexibility: The Benefits of a Headless CMS',    image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+5', category: 'Web Development', date: 'Aug 05, 2025', author: 'Chris Green' },
+      { slug: 'ai-in-development',    title: 'How AI Is Transforming the Software Development Lifecycle', image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+6', category: 'AI',              date: 'Aug 01, 2025', author: 'Jane Doe' },
+    ];
+
+    // Shortcuts
+    const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+    const $  = (sel, ctx = document) => ctx.querySelector(sel);
+
+    // FIXED: Simplified and more robust theme logic
+    function applyTheme(theme) {
+      const root = document.documentElement;
+      const isDark = theme === 'dark';
+      
+      // Update class on <html>
+      root.classList.remove(isDark ? 'light' : 'dark');
+      root.classList.add(theme);
+      
+      // Update color scheme for browser UI
+      root.style.colorScheme = theme;
+      
+      // Save preference
+      localStorage.setItem('theme', theme);
+      
+      // Update icons
+      $('#iconLight')?.classList.toggle('hidden', isDark);
+      $('#iconDark')?.classList.toggle('hidden', !isDark);
+    }
+
+    function initTheme() {
+      // Get initial theme from a single source of truth: the <html> class
+      const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      applyTheme(currentTheme);
+
+      $('#themeToggle')?.addEventListener('click', () => {
+        const newTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+        applyTheme(newTheme);
+      });
+    }
+
+    // Header scroll effects + progress bar
+    function initHeaderEffects() {
+      const header = $('#siteHeader');
+      const progress = $('#scrollProgress');
+      function onScroll() {
+        const s = window.scrollY > 6;
+        header.classList.toggle('bg-white/90', s);
+        header.classList.toggle('dark:bg-gsurface-dark/90', s);
+        header.classList.toggle('backdrop-blur', s);
+        header.classList.toggle('shadow-sm', s);
+        header.classList.toggle('border-b', s);
+        header.classList.toggle('border-gray-200/70', s);
+        header.classList.toggle('dark:border-white/10', s);
+
+        const h = document.documentElement;
+        const t = h.scrollTop || document.body.scrollTop;
+        const height = h.scrollHeight - h.clientHeight;
+        const ratio = height ? (t / height) : 0;
+        progress.style.width = (ratio * 100) + '%';
+      }
+      onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    // Reveal on scroll
+    function initReveal() {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const anim = e.target.getAttribute('data-anim');
+            e.target.classList.add('in-view');
+            if (anim === 'fade') e.target.classList.add('anim-fade-up');
+            if (anim === 'pop')  e.target.classList.add('anim-pop');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.08 });
+      $$('.reveal').forEach(el => io.observe(el));
+    }
+
+    // Navigation
+    let currentPage = 'home';
+    function showPage(page) {
+      currentPage = page;
+      $$('.page').forEach(p => p.classList.add('hidden'));
+      $('#page-' + page)?.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      initReveal();
+    }
+    function navigate(target) {
+      if (target === 'home' || target === 'blog' || target === 'contact') {
+        showPage(target);
+      } else if (target.startsWith('service:')) {
+        const slug = target.split(':')[1];
+        renderServiceDetail(slug);
+        showPage('service');
+      } else if (target === 'projects' || target === 'about') {
+        if (currentPage !== 'home') {
+          showPage('home');
+          setTimeout(() => document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+        } else {
+          document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    }
+    function wireNavLinks() {
+      $('#brandLink').addEventListener('click', (e) => { e.preventDefault(); navigate('home'); closeMobileMenu(); });
+      $$('[data-nav]').forEach(a => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigate(a.getAttribute('data-nav'));
+          closeMobileMenu();
+        });
+      });
+    }
+
+    // Services dropdown behavior (with animation)
+    let dropdownTimer;
+    function openServicesDropdown() {
+      clearTimeout(dropdownTimer);
+      const dd = $('#servicesDropdown');
+      dd.style.pointerEvents = 'auto';
+      dd.style.opacity = '1';
+      dd.classList.add('anim-slide-down');
+      $('#servicesBtn').setAttribute('aria-expanded', 'true');
+    }
+    function closeServicesDropdown() {
+      const dd = $('#servicesDropdown');
+      dd.style.pointerEvents = 'none';
+      dd.style.opacity = '0';
+      dd.classList.remove('anim-slide-down');
+      $('#servicesBtn').setAttribute('aria-expanded', 'false');
+    }
+    function initServicesDropdownBehavior() {
+      const wrapper = $('#servicesWrapper');
+      wrapper.addEventListener('mouseenter', openServicesDropdown);
+      wrapper.addEventListener('mouseleave', () => { dropdownTimer = setTimeout(closeServicesDropdown, 80); });
+      $('#servicesBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        const isOpen = $('#servicesDropdown').style.opacity === '1';
+        isOpen ? closeServicesDropdown() : openServicesDropdown();
+      });
+    }
+
+    // Mobile menu
+    function closeMobileMenu() {
+      const menu = $('#mobileMenu');
+      menu.classList.add('hidden');
+      $('#iconMenu').classList.remove('hidden');
+      $('#iconClose').classList.add('hidden');
+      $('#mobileMenuBtn').setAttribute('aria-expanded', 'false');
+    }
+    function initMobileMenu() {
+      const btn  = $('#mobileMenuBtn');
+      const menu = $('#mobileMenu');
+      btn.addEventListener('click', () => {
+        const open = menu.classList.contains('hidden');
+        if (open) {
+          menu.classList.remove('hidden');
+          $('#iconMenu').classList.add('hidden');
+          $('#iconClose').classList.remove('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+        } else { closeMobileMenu(); }
+      });
+    }
+
+    // Ripple effect
+    function initRipples() {
+      document.body.addEventListener('click', (e) => {
+        const target = e.target.closest('[data-ripple]');
+        if (!target) return;
+        target.classList.add('ripple-container');
+        const rect = target.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        target.appendChild(ripple);
+        ripple.addEventListener('animationend', () => ripple.remove());
+      });
+    }
+
+    // Render helpers (services/menu/footer)
+    function serviceItemHTML(s) {
+      return `
+        <a href="#" data-service="${s.slug}" class="flex gap-3 p-2.5 rounded-xl hover:bg-gray-100/80 dark:hover:bg-white/5 transition-colors">
+          <span class="material-symbols-rounded text-gblue dark:text-gblue-dark">${s.icon}</span>
+          <div>
+            <p class="font-medium text-gray-900 dark:text-white">${s.title}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">${s.description}</p>
+          </div>
+        </a>
+      `;
+    }
+    function renderServicesDropdown() {
+      const grid = $('#servicesDropdownGrid');
+      grid.innerHTML = servicesData.map(serviceItemHTML).join('');
+      grid.querySelectorAll('[data-service]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          closeServicesDropdown();
+          navigate('service:' + el.getAttribute('data-service'));
+        });
+      });
+    }
+    function renderServicesGrid() {
+      const grid = $('#servicesGrid');
+      grid.innerHTML = servicesData.map(s => `
+        <div class="reveal bg-white dark:bg-white/5 p-5 rounded-2xl border border-gray-200/70 dark:border-white/10 hover:shadow-google transition-shadow" data-anim="pop">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="h-10 w-10 rounded-xl bg-gblue/10 dark:bg-gblue/15 flex items-center justify-center">
+              <span class="material-symbols-rounded text-gblue dark:text-gblue-dark">${s.icon}</span>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white">${s.title}</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400 mb-4">${s.description}</p>
+          <a href="#" data-service="${s.slug}" data-ripple class="inline-flex items-center gap-1.5 text-gblue dark:text-gblue-dark font-medium">
+            Learn more <span class="material-symbols-rounded text-[18px]">arrow_forward</span>
+          </a>
+        </div>
+      `).join('');
+      grid.querySelectorAll('[data-service]').forEach(a => a.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigate('service:' + a.getAttribute('data-service'));
+      }));
+    }
+    function renderFooterServices() {
+      const ul = $('#footerServices');
+      ul.innerHTML = servicesData.map(s => `
+        <li><a href="#" data-service="${s.slug}" class="text-gray-700 dark:text-gray-300 hover:text-gblue dark:hover:text-gblue-dark">${s.title}</a></li>
+      `).join('');
+      ul.querySelectorAll('[data-service]').forEach(a => a.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigate('service:' + a.getAttribute('data-service'));
+      }));
+    }
+    function renderMobileServices() {
+      const ul = $('#mobileServicesList');
+      ul.innerHTML = servicesData.map(s => `
+        <li><a href="#" data-service="${s.slug}" class="block py-1.5 text-gray-900 dark:text-gray-100 hover:text-gblue dark:hover:text-gblue-dark">${s.title}</a></li>
+      `).join('');
+      ul.querySelectorAll('[data-service]').forEach(a => a.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigate('service:' + a.getAttribute('data-service'));
+      }));
+    }
+
+    // Blog rendering
+    function renderBlogPage() {
+      const grid = $('#blogPostsGrid');
+      grid.innerHTML = blogPostsData.map(p => `
+        <article class="reveal rounded-2xl overflow-hidden bg-white dark:bg-white/5 border border-gray-200/70 dark:border-white/10 hover:shadow-google transition-shadow" data-anim="pop">
+          <a href="#" data-nav="blog" class="block">
+            <div class="overflow-hidden">
+              <img src="${p.image}" alt="${p.title}" class="w-full h-48 object-cover transition-transform duration-500 hover:scale-[1.02]" />
+            </div>
+            <div class="p-5">
+              <p class="text-gblue dark:text-gblue-dark text-xs font-medium mb-1">${p.category}</p>
+              <h3 class="text-[17px] font-medium text-gray-900 dark:text-white mb-1.5">${p.title}</h3>
+              <p class="text-[13px] text-gray-600 dark:text-gray-400">By ${p.author} on ${p.date}</p>
+            </div>
+          </a>
+        </article>
+      `).join('');
+      const categories = [...new Set(blogPostsData.map(p => p.category))];
+      $('#blogCategories').innerHTML = categories.map(cat => `
+        <li><a href="#" class="text-gray-700 dark:text-gray-300 hover:text-gblue dark:hover:text-gblue-dark">${cat}</a></li>
+      `).join('');
+      initReveal();
+    }
+
+    // Service detail
+    function renderServiceDetail(slug) {
+      const s = servicesData.find(x => x.slug === slug);
+      if (!s) return;
+      $('#serviceIcon').innerHTML = `<span class="material-symbols-rounded text-gblue dark:text-gblue-dark text-[36px]"> ${s.icon} </span>`;
+      $('#serviceTitle').textContent = s.title;
+      $('#serviceDesc').textContent = s.description;
+      $('#serviceContent').innerHTML = `
+        <p>${s.details}</p>
+        <p>
+          We collaborate closely to refine scope, user journeys, and technical architecture.
+          Expect pragmatic decisions, fast iteration, and meticulous attention to quality.
+        </p>
+        <h3>Our process</h3>
+        <ol>
+          <li>Discovery & Strategy</li>
+          <li>UX/UI Design</li>
+          <li>Development & QA</li>
+          <li>Launch & Support</li>
+        </ol>
+      `;
+    }
+
+    // Contact form
+    function initContactForm() {
+      const form = $('#contactForm');
+      const status = $('#contactStatus');
+      form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        status.textContent = 'Sending...';
+        status.classList.remove('hidden');
+        setTimeout(() => {
+          status.textContent = 'Message sent successfully!';
+          setTimeout(() => status.classList.add('hidden'), 2500);
+          form.reset();
+        }, 1000);
+      });
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+      renderServicesDropdown();
+      renderServicesGrid();
+      renderFooterServices();
+      renderMobileServices();
+      renderBlogPage();
+
+      initHeaderEffects();
+      initServicesDropdownBehavior();
+      initMobileMenu();
+      initRipples();
+      wireNavLinks();
+      initContactForm();
+      initTheme();
+
+      $('#year').textContent = new Date().getFullYear();
+      initReveal();
+    });
+  </script>
+</body>
+</html>
