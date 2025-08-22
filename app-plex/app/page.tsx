@@ -1,501 +1,585 @@
-"use client";
-
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { 
-  Code, 
-  Smartphone, 
-  Globe, 
-  Database, 
-  Cloud, 
-  Shield, 
-  Users, 
-  Award, 
-  Clock, 
-  CheckCircle,
+// app/page.tsx
+import Image from "next/image";
+import {
+  ChevronDown,
   ArrowRight,
-  Mail,
-  Phone,
-  MapPin,
-  Menu,
-  X
-} from 'lucide-react';
+  ArrowLeft,
+  Download,
+  Star,
+  Facebook,
+  Linkedin,
+  Instagram,
+  Quote,
+} from "lucide-react";
+import React from 'react';
 
-export default function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+// Reusable DottedGrid component
+const DottedGrid = ({ className }: { className?: string }) => (
+  <div className={`absolute grid grid-cols-7 gap-x-3 gap-y-2 opacity-50 ${className}`}>
+    {Array.from({ length: 56 }).map((_, i) => (
+      <div key={i} className="w-1.5 h-1.5 bg-violet-300 rounded-full" />
+    ))}
+  </div>
+);
 
-  const services = [
-    {
-      icon: <Code className="h-8 w-8" />,
-      title: "Web Development",
-      description: "Custom web applications built with modern technologies and best practices."
-    },
-    {
-      icon: <Smartphone className="h-8 w-8" />,
-      title: "Mobile Development",
-      description: "Native and cross-platform mobile apps for iOS and Android devices."
-    },
-    {
-      icon: <Globe className="h-8 w-8" />,
-      title: "Enterprise Solutions",
-      description: "Scalable enterprise software solutions tailored to your business needs."
-    },
-    {
-      icon: <Database className="h-8 w-8" />,
-      title: "Data Analytics",
-      description: "Advanced data analytics and business intelligence solutions."
-    },
-    {
-      icon: <Cloud className="h-8 w-8" />,
-      title: "Cloud Services",
-      description: "Cloud migration, deployment, and infrastructure management services."
-    },
-    {
-      icon: <Shield className="h-8 w-8" />,
-      title: "Security Audit",
-      description: "Comprehensive security audits and vulnerability assessments."
-    }
-  ];
-
-  const stats = [
-    { value: "99%", label: "Client Satisfaction Rate" },
-    { value: "350+", label: "Projects Completed" },
-    { value: "19", label: "Years of Experience" },
-    { value: "1400+", label: "Happy Clients" }
-  ];
-
-  const whyChooseUs = [
-    {
-      title: "Expert Team",
-      description: "Our team consists of highly skilled developers with years of industry experience."
-    },
-    {
-      title: "Quality Assurance",
-      description: "We follow rigorous testing processes to ensure the highest quality deliverables."
-    },
-    {
-      title: "Innovative Solutions",
-      description: "We leverage cutting-edge technologies to build innovative software solutions."
-    },
-    {
-      title: "24/7 Support",
-      description: "Round-the-clock support to ensure your applications run smoothly."
-    }
-  ];
-
-  const developmentProcess = [
-    {
-      step: "1",
-      title: "Discovery & Planning",
-      description: "We analyze your requirements and create a detailed project roadmap."
-    },
-    {
-      step: "2",
-      title: "Design & Prototyping",
-      description: "Creating intuitive designs and interactive prototypes for validation."
-    },
-    {
-      step: "3",
-      title: "Development & Testing",
-      description: "Building robust solutions with comprehensive testing at every stage."
-    },
-    {
-      step: "4",
-      title: "Deployment & Maintenance",
-      description: "Seamless deployment and ongoing support for your applications."
-    }
+// --- Header Component (UPDATED) ---
+const Header = () => {
+  const serviceLinks = [
+    { name: "Web Development", href: "/webdevelopment" },
+    { name: "Frontend Development", href: "/fontend" },
+    { name: "Backend Development", href: "backend" },
+    { name: "Mobile Development", href: "mobile" },
+    { name: "Product Design", href: "product" },
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
-                <Code className="h-5 w-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-gray-900">App-Plex</span>
-            </div>
-            
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="#services" className="text-gray-700 hover:text-purple-600 transition-colors">Services</a>
-              <a href="#about" className="text-gray-700 hover:text-purple-600 transition-colors">About</a>
-              <a href="#process" className="text-gray-700 hover:text-purple-600 transition-colors">Projects</a>
-              <a href="#contact" className="text-gray-700 hover:text-purple-600 transition-colors">Contact</a>
-              <Button className="bg-purple-600 hover:bg-purple-700">Let'Talk</Button>
-            </nav>
-
-            <button 
-              className="md:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+    <header className="bg-white/80 backdrop-blur-lg sticky top-0 z-50">
+      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="flex items-center gap-8">
+          {/* Logo */}
+          <div className="font-bold text-2xl text-brand-dark">
+            <svg width="120" height="30" viewBox="0 0 133 33" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.284 32.185c-6.84 0-11.832-5.11-11.832-15.687C10.452 5.858 15.444.75 22.284.75c6.84 0 11.832 5.108 11.832 15.737 0 10.578-4.992 15.698-11.832 15.698zm0-26.65c-3.792 0-5.88 3.55-5.88 10.963 0 7.31 2.088 10.91 5.88 10.91 3.792 0 5.88-3.6 5.88-10.91.05-7.412-2.088-10.963-5.88-10.963zM45.626 31.75h-5.928V1.18h5.928v30.57zM57.925 31.75h-5.928V1.18h5.928v30.57zM81.218 31.75h-5.496l-9.312-14.24V31.75h-5.928V1.18h5.496l9.312 14.24V1.18h5.928v30.57zM103.058 32.185c-6.84 0-11.832-5.11-11.832-15.687 0-10.628 4.992-15.738 11.832-15.738 3.936 0 6.84 1.48 8.448 3.84l-3.936 3.4c-1.128-.9-2.28-1.58-4.512-1.58-3.792 0-5.88 3.6-5.88 10.91 0 7.31 2.088 10.91 5.88 10.91 2.232 0 3.384-.68 4.512-1.58l3.936 3.4c-1.608 2.36-4.512 3.84-8.448 3.84zM128.243 19.387c0 7.55-4.128 12.8-10.44 12.8-6.312 0-10.44-5.25-10.44-12.8V1.18h5.928v18.207c0 4.6 2.088 7.9 4.512 7.9s4.512-3.3 4.512-7.9V1.18h5.928v18.207zM.16 1.18h6.12v15.25c0 6.25-2.75 9.4-7.25 9.4H-.7v-5.65c1.45.3 3.1.45 4.87.45 1.7 0 2.22-.5 2.22-1.75V1.18h.77z" fill="#111827"></path><path d="M41.77 1.18h-8.25L32.25 15l-1.27-13.82h-8.25L28.52 31.7h8.25l1.28-13.78 1.27 13.78h8.25L41.77 1.18z" fill="#7C3AED"></path></svg>
           </div>
-
-          {/* Mobile Menu */}
-          {isMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-white border-b shadow-lg">
-              <nav className="px-4 py-4 space-y-4">
-                <a href="#services" className="block text-gray-700 hover:text-purple-600">Services</a>
-                <a href="#about" className="block text-gray-700 hover:text-purple-600">About</a>
-                <a href="#process" className="block text-gray-700 hover:text-purple-600">Process</a>
-                <a href="#contact" className="block text-gray-700 hover:text-purple-600">Contact</a>
-                <Button className="w-full bg-purple-600 hover:bg-purple-700">Get Started</Button>
-              </nav>
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+            {/* Services Dropdown */}
+            <div className="relative group">
+              <button className="flex items-center gap-1 hover:text-brand-purple transition-colors">
+                Services <ChevronDown size={16} />
+              </button>
+              <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-2 w-56 ring-1 ring-black ring-opacity-5 z-20">
+                <div className="py-1">
+                  {serviceLinks.map((link) => (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 hover:text-brand-purple"
+                    >
+                      {link.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
             </div>
-          )}
+
+            <a href="/project" className="hover:text-brand-purple">Projects</a>
+            <a href="about" className="hover:text-brand-purple">About</a>
+            <a href="#" className="flex items-center gap-1 hover:text-brand-purple">How We Work <ChevronDown size={16} /></a>
+            <a href="#" className="flex items-center gap-1 hover:text-brand-purple">Blog & More <ChevronDown size={16} /></a>
+            <a href="#" className="hover:text-brand-purple">Careers</a>
+          </nav>
         </div>
-      </header>
+        <a href="#" className="hidden md:inline-block border border-gray-300 rounded-md px-6 py-2 text-sm font-semibold text-brand-dark hover:bg-gray-100 transition-colors">LET'S TALK</a>
+      </div>
+    </header>
+  );
+};
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-purple-50 to-indigo-50 py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-                  Trusted by 1400+ Companies
-                </Badge>
-                <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  We Care to Deliver
-                  <span className="text-purple-600"> Useful Software</span>
-                </h1>
-                <p className="text-lg text-gray-600 leading-relaxed">
-                  Transform your business with custom software solutions designed to drive growth, 
-                  improve efficiency, and deliver exceptional user experiences.
-                </p>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
-                  Start Your Project
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button size="lg" variant="outline">
-                  View Our Work
-                </Button>
-              </div>
 
-              <div className="flex items-center space-x-8 pt-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">19+</div>
-                  <div className="text-sm text-gray-600">Years</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">350+</div>
-                  <div className="text-sm text-gray-600">Projects</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-900">99%</div>
-                  <div className="text-sm text-gray-600">Success Rate</div>
-                </div>
-              </div>
+// --- Hero Section ---
+const Hero = () => (
+  <section className="bg-gray-50 py-20">
+    <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+      <div className="relative">
+        <DottedGrid className="top-0 left-0 -translate-x-1/4 -translate-y-1/4" />
+        <h1 className="text-5xl font-bold text-brand-dark leading-tight">
+          We Care to Deliver Useful Software
+        </h1>
+        <p className="mt-6 text-lg text-gray-600">
+          Since 2006, Polcode has advised clients on how to modify, upgrade, or build new products. We have also delivered custom software development services, including applications, websites, e-commerce solutions, and IT systems. With Polcode, you can expect a business-oriented approach and technology choices that fully support your business's specific needs.
+        </p>
+        <button className="mt-8 bg-brand-purple text-white font-semibold py-3 px-8 rounded-md hover:bg-violet-700 transition-colors">
+          LET'S TALK
+        </button>
+      </div>
+      <div className="relative h-[450px]">
+        <DottedGrid className="top-0 right-0 translate-x-1/4 -translate-y-1/4 z-10" />
+        <div className="absolute inset-0 bg-brand-purple opacity-40 z-20"></div>
+        <Image src="/hero-image.png" alt="Team working on a laptop" layout="fill" objectFit="cover" className="z-10" />
+      </div>
+    </div>
+  </section>
+);
+
+// --- Services Section ---
+const ServiceCard = ({ title, items }: { title: string; items: string[] }) => (
+  <a href="#" className="group bg-white p-8 shadow-sm hover:shadow-xl transition-shadow rounded-lg flex flex-col">
+    <h3 className="text-2xl font-semibold text-brand-dark">{title}</h3>
+    <div className="mt-4 text-gray-500 space-y-1 flex-grow">
+      {items.map(item => <p key={item}>{item}</p>)}
+    </div>
+    <div className="mt-6 self-end">
+      <ArrowRight className="text-gray-400 group-hover:text-brand-purple transition-colors" />
+    </div>
+  </a>
+);
+
+const Services = () => (
+  <section className="py-24 bg-white">
+    <div className="container mx-auto px-6 text-center">
+      <h2 className="text-4xl font-bold text-brand-dark">Custom Software Development Services</h2>
+      <p className="mt-6 max-w-4xl mx-auto text-gray-600">
+        We offer a wide range of services, including IT consulting (scope sessions, audits), managed IT services, product design, and development, utilizing both <span className="font-semibold">Team Extension</span> and <span className="font-semibold">Scope Delivery/Fix Price</span> models.
+      </p>
+      <p className="mt-4 max-w-4xl mx-auto text-gray-600">
+        Polcode is proud to be a <span className="font-semibold text-brand-purple">Twilio Technology Partner</span>, an <span className="font-semibold text-brand-purple">Adobe Solutions Technology Bronze Partner</span>, and a member of the <span className="font-semibold text-brand-purple">Polish Chamber of Healthcare IT</span>.
+      </p>
+
+      <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+        <ServiceCard title="Web Development" items={["Frontend", "Backend"]} />
+        <ServiceCard title="Frontend Development" items={["React", "Vue.js", "Angular"]} />
+        <ServiceCard title="Backend Development" items={["Symfony Laravel PHP", "Python Node.js", "Ruby on Rails Golang"]} />
+        <ServiceCard title="eCommerce Development" items={["Shopify", "WooCommerce", "Magento"]} />
+        <ServiceCard title="Mobile Development" items={["Hybrid Apps", "React Native"]} />
+        <ServiceCard title="Product Design" items={["UI", "UX"]} />
+      </div>
+      
+      <div className="mt-16 flex flex-col md:flex-row justify-center items-center gap-12 text-lg font-semibold text-brand-dark">
+        <a href="#" className="flex items-center gap-2 hover:text-brand-purple">Software Audit <ArrowRight /></a>
+        <a href="#" className="flex items-center gap-2 hover:text-brand-purple">Team Extension <ArrowRight /></a>
+        <a href="#" className="flex items-center gap-2 hover:text-brand-purple">Legacy System Modernization <ArrowRight /></a>
+      </div>
+    </div>
+  </section>
+);
+
+// --- "Not Sure Where to Start" CTA ---
+const ConsultationCTA = () => (
+  <section className="bg-gray-50 py-24">
+    <div className="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+      <div className="relative">
+         <DottedGrid className="top-0 left-0 -translate-x-1/2 -translate-y-1/2" />
+        <h2 className="text-4xl font-bold text-brand-dark leading-tight">
+          Not Sure Where to Start Your Product Development Project?
+        </h2>
+        <p className="mt-6 text-gray-600">
+          No worries! We’ll help you step by step with design, technology and team choices. You’ll end up with a product plan and resource estimations to plan ahead with greater accuracy.
+        </p>
+        <button className="mt-8 bg-brand-purple text-white font-semibold py-3 px-8 rounded-md hover:bg-violet-700 transition-colors">
+          FREE CONSULTATION
+        </button>
+        <a href="#" className="mt-8 ml-6 inline-flex items-center gap-2 font-semibold text-brand-dark hover:text-brand-purple">
+          Get tips on how to best prepare for our first meeting
+          <Download />
+        </a>
+      </div>
+      <div>
+        <Image src="/consultation-image.png" alt="Team in a meeting" width={600} height={400} className="rounded-lg shadow-lg" />
+      </div>
+    </div>
+  </section>
+);
+
+// --- Testimonials Section ---
+const Testimonials = () => (
+  <section className="bg-brand-purple text-white py-20">
+    <div className="container mx-auto px-6">
+      <h2 className="text-4xl font-bold mb-12">Don't Take It From Us. Hear From Our Clients:</h2>
+      <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <Quote className="text-violet-400 -ml-4" size={60} fill="currentColor"/>
+          <blockquote className="mt-4 text-lg leading-relaxed text-violet-100">
+            We moved from another agency to Polcode. They have a good track record and reviews, their sales process was great, and the audit was impressive. There's no doubt that Polcode saved the project. We continue to be really pleased with our results. The project is really big, and there's a lot of technology inside. We make progress easily and new features keep coming so the code quality is really satisfying.
+          </blockquote>
+          <div className="mt-8 flex justify-between items-center">
+             <div className="flex items-center gap-4">
+              <button className="border border-violet-400 rounded-full p-2 hover:bg-white/10"><ArrowLeft size={20}/></button>
+              <button className="border border-violet-400 rounded-full p-2 hover:bg-white/10"><ArrowRight size={20}/></button>
+             </div>
+             <div className="flex items-center gap-2">
+                <span className="w-3 h-3 bg-white rounded-full"></span>
+                {Array.from({ length: 8 }).map((_, i) => (
+                   <span key={i} className="w-2 h-2 bg-violet-400 rounded-full"></span>
+                ))}
+             </div>
+          </div>
+        </div>
+        <div className="flex justify-end">
+           <div className="text-right">
+             <p className="text-xl font-semibold">Jan Donmez</p>
+             <p className="text-violet-200">Founder & CEO at AppyBee</p>
+           </div>
+           <div className="ml-6 flex items-center justify-center bg-white rounded-full w-20 h-20">
+             {/* Replace with AppyBee logo */}
+             <Image src="/appybee-logo-color.svg" width={60} height={60} alt="AppyBee Logo"/>
+           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+// --- Partners Section ---
+const Partners = () => (
+    <section className="py-20 bg-white">
+        <div className="container mx-auto px-6 text-center">
+            <h2 className="text-4xl font-bold text-brand-dark">Work with Top Web & Mobile Development Teams</h2>
+            <p className="mt-6 max-w-4xl mx-auto text-gray-600">
+                To date, we’ve successfully completed over 1,400 projects for medium and large organizations across the US, Canada, and Western Europe, from diverse industries such as retail, fintech, healthcare, manufacturing, and logistics.
+            </p>
+            <div className="mt-12 flex justify-center items-center flex-wrap gap-x-12 gap-y-8 grayscale opacity-70">
+                {/* Replace with partner logos */}
+                <Image src="/partner-appybee.svg" width={100} height={40} alt="AppyBee" />
+                <Image src="/partner-combo-strike.svg" width={130} height={40} alt="Combo Strike" />
+                <Image src="/partner-mk.svg" width={100} height={40} alt="MK Consulting" />
+                <Image src="/partner-impak.svg" width={100} height={40} alt="Impak" />
+                <Image src="/partner-hidden-profits.svg" width={120} height={40} alt="Hidden Profits Marketing" />
+                <Image src="/partner-sitevibes.svg" width={110} height={40} alt="Sitevibes" />
             </div>
+        </div>
+    </section>
+);
 
-            <div className="relative">
-              <div className="relative z-10">
-                <img 
-                  src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800"
-                  alt="Developer working on laptop"
-                  className="w-full h-[500px] object-cover rounded-2xl shadow-2xl"
+// --- Projects Section ---
+const ProjectCard = ({ imgSrc, tags, title, industry, region, clientLogoSrc, clientName }: any) => (
+    <a href="#" className="group block">
+        <div className="bg-gray-100 rounded-lg overflow-hidden p-4">
+            <Image src={imgSrc} width={600} height={400} alt={title} className="transform group-hover:scale-105 transition-transform duration-300"/>
+        </div>
+        <div className="bg-white p-6 shadow-sm group-hover:shadow-xl transition-shadow rounded-b-lg -mt-4 relative z-10">
+            <p className="text-xs font-bold text-gray-400 tracking-wider">{tags}</p>
+            <h3 className="mt-2 text-xl font-semibold text-brand-dark leading-tight">{title}</h3>
+            <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <p className="text-gray-400 text-xs uppercase">Industry</p>
+                    <p className="font-medium text-gray-700">{industry}</p>
+                </div>
+                <div>
+                    <p className="text-gray-400 text-xs uppercase">Region</p>
+                    <p className="font-medium text-gray-700">{region}</p>
+                </div>
+            </div>
+            <div className="mt-6 border-t pt-4 flex justify-between items-center">
+                <div>
+                    <p className="text-gray-400 text-xs uppercase">Client</p>
+                    {/* Replace with client logos */}
+                    <Image src={clientLogoSrc} width={100} height={30} alt={clientName} className="mt-1"/>
+                </div>
+                <ArrowRight className="text-gray-400 group-hover:text-brand-purple transition-colors"/>
+            </div>
+        </div>
+    </a>
+);
+
+const Projects = () => (
+    <section className="py-24 bg-gray-50">
+        <div className="container mx-auto px-6">
+            <h2 className="text-4xl font-bold text-brand-dark text-center">Our Latest Web & Mobile Projects</h2>
+            <div className="mt-16 grid md:grid-cols-2 gap-12">
+                <ProjectCard
+                    imgSrc="/project-sitevibes.png"
+                    tags="LARAVEL VUE.JS"
+                    title="Building Alongside Digital Marketing CTOs"
+                    industry="Digital agencies"
+                    region="USA"
+                    clientLogoSrc="/sitevibes-logo.svg"
+                    clientName="Sitevibes"
                 />
-              </div>
-              <div className="absolute -bottom-4 -right-4 w-full h-full bg-purple-200 rounded-2xl -z-10"></div>
-              <div className="absolute -top-4 -left-4 w-32 h-32 bg-purple-600 rounded-full opacity-10"></div>
+                <ProjectCard
+                    imgSrc="/project-puccini.png"
+                    tags="MAGENTO WORDPRESS"
+                    title="Scaling Up Online Sales from Regional to International Ecommerce"
+                    industry="eCommerce"
+                    region="Poland"
+                    clientLogoSrc="/puccini-logo.svg"
+                    clientName="Puccini"
+                />
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section id="services" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-              Our Services
-            </Badge>
-            <h2 className="text-3xl lg:text-5xl font-bold text-gray-900">
-              Custom Software Development Services
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              We provide end-to-end software development services to help businesses achieve their goals 
-              through innovative technology solutions.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
-                    {service.icon}
-                  </div>
-                  <CardTitle className="text-xl">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-gray-600">
-                    {service.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative">
-              <img 
-                src="https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Team collaboration"
-                className="w-full h-[400px] object-cover rounded-2xl shadow-2xl"
-              />
-              <div className="absolute -bottom-6 -right-6 w-full h-full bg-purple-100 rounded-2xl -z-10"></div>
+            <div className="text-center mt-16">
+                <button className="border border-brand-purple text-brand-purple font-semibold py-3 px-10 rounded-md hover:bg-brand-purple hover:text-white transition-colors">
+                    SEE MORE
+                </button>
             </div>
+        </div>
+    </section>
+);
 
-            <div className="space-y-6">
-              <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-                About Us
-              </Badge>
-              <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                Best Place to 
-                <span className="text-purple-600"> Start Your Project</span>
-              </h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                With 19 years of experience in software development, we've helped over 1400 companies 
-                transform their ideas into successful digital products. Our team of expert developers 
-                and designers work closely with clients to deliver exceptional results.
-              </p>
-              
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-5 w-5 text-purple-600" />
-                  <span className="text-gray-700">Experienced development team</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-5 w-5 text-purple-600" />
-                  <span className="text-gray-700">Agile development methodology</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-5 w-5 text-purple-600" />
-                  <span className="text-gray-700">24/7 support and maintenance</span>
-                </div>
-              </div>
 
-              <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
-                Learn More About Us
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+// --- Stats Section ---
+const Stats = () => (
+    <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6 relative">
+             <DottedGrid className="bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
+            <div className="bg-white shadow-lg rounded-lg p-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <p className="text-5xl font-bold text-brand-purple">99%</p>
+                    <p className="mt-2 text-gray-500">Job Success on Upwork</p>
+                </div>
+                <div>
+                    <p className="text-5xl font-bold text-brand-purple">150+</p>
+                    <p className="mt-2 text-gray-500">Team Members</p>
+                </div>
+                <div>
+                    <p className="text-5xl font-bold text-brand-purple">19 years</p>
+                    <p className="mt-2 text-gray-500">On the market</p>
+                </div>
+                <div>
+                    <p className="text-5xl font-bold text-brand-purple">1400+</p>
+                    <p className="mt-2 text-gray-500">Completed Projects</p>
+                </div>
             </div>
-          </div>
         </div>
-      </section>
+    </section>
+);
 
-      {/* Stats Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-600 to-indigo-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center text-white">
-                <div className="text-4xl lg:text-6xl font-bold mb-2">{stat.value}</div>
-                <div className="text-purple-100 text-sm lg:text-base">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-              Why Choose Us
-            </Badge>
-            <h2 className="text-3xl lg:text-5xl font-bold text-gray-900">
-              Work with Top Web & Mobile Development Teams
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              We combine technical expertise with business acumen to deliver software solutions 
-              that drive real business value and competitive advantage.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {whyChooseUs.map((item, index) => (
-              <Card key={index} className="p-6">
-                <CardContent className="p-0">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{item.title}</h3>
-                  <p className="text-gray-600">{item.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Development Process */}
-      <section id="process" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-4 mb-16">
-            <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-              Our Process
-            </Badge>
-            <h2 className="text-3xl lg:text-5xl font-bold text-gray-900">
-              Product Development Process
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our proven development process ensures successful project delivery from concept to deployment.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {developmentProcess.map((item, index) => (
-              <div key={index} className="text-center group">
-                <div className="w-16 h-16 bg-purple-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4 group-hover:bg-purple-700 transition-colors">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{item.title}</h3>
-                <p className="text-gray-600">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gradient-to-br from-purple-600 to-indigo-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8 text-white">
-              <div>
-                <h2 className="text-3xl lg:text-5xl font-bold mb-4">
-                  Ready to Talk About Your
-                  <span className="block">Project Development?</span>
-                </h2>
-                <p className="text-lg text-purple-100">
-                  Let's discuss how we can help you build amazing software solutions 
-                  that drive your business forward.
+// --- Why Choose Us Section ---
+const WhyChooseUs = () => (
+    <section className="py-24 bg-white">
+        <div className="container mx-auto px-6">
+            <div className="text-center">
+                <h2 className="text-4xl font-bold text-brand-dark">Why Choose Us?</h2>
+                <p className="mt-4 max-w-3xl mx-auto text-gray-600">
+                    Unlike other development companies, you’ll get to know our experts face-to-face. We go the distance to understand your business and integrate with your teams and workflows.
                 </p>
-              </div>
-
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <Phone className="h-5 w-5" />
-                  <span>+1 (555) 123-4567</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Mail className="h-5 w-5" />
-                  <span>hello@techflow.com</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <MapPin className="h-5 w-5" />
-                  <span>123 Tech Street, Silicon Valley, CA</span>
-                </div>
-              </div>
             </div>
-
-            <Card className="p-8">
-              <CardHeader>
-                <CardTitle className="text-2xl">Get Started Today</CardTitle>
-                <CardDescription>
-                  Fill out this form and we'll get back to you within 24 hours.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form className="space-y-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input placeholder="First Name" />
-                    <Input placeholder="Last Name" />
-                  </div>
-                  <Input placeholder="Email Address" type="email" />
-                  <Input placeholder="Phone Number" type="tel" />
-                  <Input placeholder="Company Name" />
-                  <textarea 
-                    className="w-full min-h-[100px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    placeholder="Tell us about your project..."
-                  />
-                  <Button className="w-full bg-purple-600 hover:bg-purple-700">
-                    Send Message
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
+            <div className="mt-16 grid md:grid-cols-2 gap-16 items-center">
+                <div className="relative">
+                    <Image src="/why-us-team.png" width={500} height={500} alt="Polcode Team" className="rounded-lg" />
+                    <DottedGrid className="bottom-0 right-0 translate-x-1/4 translate-y-1/4" />
+                </div>
+                <div className="grid grid-cols-2 gap-x-8 gap-y-10">
+                    <div>
+                        <h3 className="text-xl font-bold text-brand-dark">Team's Seniority & Loyalty</h3>
+                        <p className="mt-2 text-gray-600">Our rigorous screening process (passed by less than 2% of developers) results in a team of Mid and Senior developers who have been with us for years, providing clients with stability, assurance, and technical proficiency.</p>
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-bold text-brand-dark">Versatility</h3>
+                        <p className="mt-2 text-gray-600">We offer both managed IT services and product delivery, allowing us to work on individual modules or entire ecosystems of applications. Our team has experience building products from scratch, modernizing legacy systems, and integrating new solutions.</p>
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-bold text-brand-dark">Tech Diversity</h3>
+                        <p className="mt-2 text-gray-600">Our full-stack team can deliver projects end-to-end and approach them as advisors to ensure optimal performance, scalability, and maintainability – so you can avoid costly technical debt down the line.</p>
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-bold text-brand-dark">Operational Excellence</h3>
+                        <p className="mt-2 text-gray-600">We have developed strict yet flexible processes to ensure that every solution we deliver is nothing short of excellent. We proactively monitor, analyze risks, and use robust QA procedures to make sure that everything runs smoothly.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </section>
+    </section>
+);
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
-                  <Code className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-bold">TechFlow</span>
-              </div>
-              <p className="text-gray-400">
-                Delivering innovative software solutions for businesses worldwide.
-              </p>
-            </div>
 
-            <div>
-              <h3 className="font-semibold mb-4">Services</h3>
-              <div className="space-y-2 text-gray-400">
-                <div>Web Development</div>
-                <div>Mobile Development</div>
-                <div>Cloud Services</div>
-                <div>Security Audit</div>
-              </div>
-            </div>
+// --- Process Section ---
+const ProcessDiagram = () => (
+    <div className="relative w-[450px] h-[450px] mx-auto">
+        <div className="absolute inset-0 border-2 border-dashed border-gray-300 rounded-full"></div>
+        
+        {/* Central Text - Can be added if needed */}
 
-            <div>
-              <h3 className="font-semibold mb-4">Company</h3>
-              <div className="space-y-2 text-gray-400">
-                <div>About Us</div>
-                <div>Careers</div>
-                <div>Contact</div>
-                <div>Blog</div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold mb-4">Newsletter</h3>
-              <p className="text-gray-400 mb-4">Get the latest news from our blog.</p>
-              <div className="flex space-x-2">
-                <Input placeholder="Your email" className="bg-gray-800 border-gray-700" />
-                <Button className="bg-purple-600 hover:bg-purple-700">Subscribe</Button>
-              </div>
-            </div>
-          </div>
-
-          <Separator className="my-8 bg-gray-800" />
-
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="text-gray-400 text-sm">
-              © 2024 TechFlow. All rights reserved.
-            </div>
-            <div className="flex space-x-6 text-gray-400 text-sm mt-4 md:mt-0">
-              <span>Privacy Policy</span>
-              <span>Terms of Service</span>
-              <span>Cookie Policy</span>
-            </div>
-          </div>
+        {/* Process Items */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+            <div className="bg-white shadow-md rounded-full w-16 h-16 flex items-center justify-center"><svg className="text-brand-purple" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></div>
+            <p className="mt-2 font-semibold text-brand-dark">Workshops</p>
         </div>
-      </footer>
+        <div className="absolute top-1/4 right-0 translate-x-1/4 -translate-y-1/2 text-center">
+             <div className="bg-white shadow-md rounded-full w-16 h-16 flex items-center justify-center"><svg className="text-brand-purple" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+            <p className="mt-2 font-semibold text-brand-dark">Kick-off</p>
+        </div>
+         <div className="absolute bottom-1/4 right-0 translate-x-1/4 translate-y-1/2 text-center">
+            <div className="bg-white shadow-md rounded-full w-16 h-16 flex items-center justify-center"><svg className="text-brand-purple" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+            <p className="mt-2 font-semibold text-brand-dark">UX/UI Design</p>
+        </div>
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 text-center">
+            <div className="bg-white shadow-md rounded-full w-16 h-16 flex items-center justify-center"><svg className="text-brand-purple" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m16 18-6-6 6-6"/><path d="M8 6h10"/></svg></div>
+            <p className="mt-2 font-semibold text-brand-dark">Development</p>
+        </div>
+        <div className="absolute bottom-1/4 left-0 -translate-x-1/4 translate-y-1/2 text-center">
+            <div className="bg-white shadow-md rounded-full w-16 h-16 flex items-center justify-center"><svg className="text-brand-purple" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22a7 7 0 0 0 7-7h-4a3 3 0 0 1-3-3V8a3 3 0 0 1-3-3H2a7 7 0 0 0 7 7 3 3 0 0 1 3 3v4Z"/><path d="M21 21c-1.5-1.5-2-4-3-6"/><path d="m18 13-1.5-1.5"/><circle cx="8" cy="8" r="2"/></svg></div>
+            <p className="mt-2 font-semibold text-brand-dark">Delivery & Support</p>
+        </div>
+    </div>
+);
+
+
+const Process = () => (
+    <section className="bg-gray-50 py-24">
+        <div className="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 className="text-4xl font-bold text-brand-dark">Our Product Development Process</h2>
+                <p className="mt-6 text-gray-600">
+                    We take care of your projects with proven agile methods that are designed to get all stakeholders (even non-technical ones) in alignment. Our workflow amplifies collaboration and faster turnarounds to achieve even the most ambitious goals.
+                </p>
+                <a href="#" className="mt-8 inline-flex items-center gap-2 font-semibold text-brand-purple">
+                    SEE HOW WE WORK <ArrowRight />
+                </a>
+            </div>
+            <div>
+                <ProcessDiagram />
+            </div>
+        </div>
+    </section>
+);
+
+
+// --- Blog Section ---
+const Blog = () => {
+    const blogPosts = [
+        "Magento 2.4.5 End of Support: What It Means and How to Decide What Comes Next",
+        "Why We Said Goodbye to Time & Material in Managed Delivery and What It Means for You",
+        "The Versatility of Python - What Makes It Stand Out?",
+        "Is Your E-commerce Business Ready for the European Accessibility Act?",
+        "Legacy Software and Security Risks: Why Regular Audits Are Your Best Defense",
+        "Magento Enters the SaaS Arena: What Adobe Commerce as a Service Means for Your Business"
+    ];
+    return (
+        <section className="py-24 bg-white">
+            <div className="container mx-auto px-6 grid md:grid-cols-2 gap-16">
+                <div className="relative">
+                    <DottedGrid className="top-0 left-0 -translate-x-1/2" />
+                    <h2 className="text-4xl font-bold text-brand-dark">Get the Latest News From Our Blog</h2>
+                    <a href="#" className="mt-8 inline-flex items-center gap-2 font-semibold text-brand-purple">
+                        SEE ALL POSTS <ArrowRight />
+                    </a>
+                </div>
+                <div className="grid md:grid-cols-2 gap-x-8 gap-y-6">
+                    {blogPosts.map((title, i) => (
+                        <a key={i} href="#" className="font-semibold text-gray-700 hover:text-brand-purple">{title}</a>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+};
+
+// --- "Ready to Talk" CTA ---
+const ContactCTA = () => (
+    <section className="bg-gray-50">
+        <div className="container mx-auto grid lg:grid-cols-2">
+            <div className="bg-brand-purple p-16 text-white">
+                <h2 className="text-4xl font-bold">Ready to Talk About Your Product Development Project?</h2>
+                <div className="mt-12 space-y-10">
+                    <div className="flex gap-6">
+                        <p className="text-6xl font-bold text-violet-400">1.</p>
+                        <div>
+                            <h3 className="text-2xl font-semibold">Tell Us More</h3>
+                            <p className="mt-2 text-violet-200">Fill out a quick form describing your needs. You can always add details later on and we’ll reply within a day!</p>
+                            <button className="mt-4 bg-white text-brand-purple font-semibold py-2 px-6 rounded-md">CONTACT US</button>
+                        </div>
+                    </div>
+                    <div className="flex gap-6">
+                        <p className="text-6xl font-bold text-violet-400">2.</p>
+                        <div>
+                            <h3 className="text-2xl font-semibold">Strategic Planning</h3>
+                            <p className="mt-2 text-violet-200">We go through recommended tools, technologies and frameworks that best fit the challenges you face.</p>
+                        </div>
+                    </div>
+                    <div className="flex gap-6">
+                        <p className="text-6xl font-bold text-violet-400">3.</p>
+                        <div>
+                            <h3 className="text-2xl font-semibold">Workshop Kickoff</h3>
+                            <p className="mt-2 text-violet-200">Once we arrange the formalities, you can meet your Polcode team members and we’ll begin developing your next project.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="hidden lg:block relative">
+                <Image src="/contact-cta-image.png" alt="Team brainstorming on a whiteboard" layout="fill" objectFit="cover" />
+            </div>
+        </div>
+    </section>
+);
+
+// --- Footer Section ---
+const Footer = () => (
+    <footer className="bg-white pt-20">
+        <div className="container mx-auto px-6 relative">
+            <DottedGrid className="top-0 right-0" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+                <div className="xl:col-span-2">
+                     <svg width="120" height="30" viewBox="0 0 133 33" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.284 32.185c-6.84 0-11.832-5.11-11.832-15.687C10.452 5.858 15.444.75 22.284.75c6.84 0 11.832 5.108 11.832 15.737 0 10.578-4.992 15.698-11.832 15.698zm0-26.65c-3.792 0-5.88 3.55-5.88 10.963 0 7.31 2.088 10.91 5.88 10.91 3.792 0 5.88-3.6 5.88-10.91.05-7.412-2.088-10.963-5.88-10.963zM45.626 31.75h-5.928V1.18h5.928v30.57zM57.925 31.75h-5.928V1.18h5.928v30.57zM81.218 31.75h-5.496l-9.312-14.24V31.75h-5.928V1.18h5.496l9.312 14.24V1.18h5.928v30.57zM103.058 32.185c-6.84 0-11.832-5.11-11.832-15.687 0-10.628 4.992-15.738 11.832-15.738 3.936 0 6.84 1.48 8.448 3.84l-3.936 3.4c-1.128-.9-2.28-1.58-4.512-1.58-3.792 0-5.88 3.6-5.88 10.91 0 7.31 2.088 10.91 5.88 10.91 2.232 0 3.384-.68 4.512-1.58l3.936 3.4c-1.608 2.36-4.512 3.84-8.448 3.84zM128.243 19.387c0 7.55-4.128 12.8-10.44 12.8-6.312 0-10.44-5.25-10.44-12.8V1.18h5.928v18.207c0 4.6 2.088 7.9 4.512 7.9s4.512-3.3 4.512-7.9V1.18h5.928v18.207zM.16 1.18h6.12v15.25c0 6.25-2.75 9.4-7.25 9.4H-.7v-5.65c1.45.3 3.1.45 4.87.45 1.7 0 2.22-.5 2.22-1.75V1.18h.77z" fill="#111827"></path><path d="M41.77 1.18h-8.25L32.25 15l-1.27-13.82h-8.25L28.52 31.7h8.25l1.28-13.78 1.27 13.78h8.25L41.77 1.18z" fill="#7C3AED"></path></svg>
+                    <div className="mt-4 space-y-2 text-gray-600 text-sm">
+                        <p>Polcode Sp. z o.o.</p>
+                        <p>Al. Jerozolimskie 94</p>
+                        <p>00-807 Warszawa</p>
+                        <p>Poland</p>
+                        <p>VAT-ID: PL7010440690</p>
+                    </div>
+                    <a href="mailto:sales@polcode.com" className="mt-4 inline-block text-brand-purple font-semibold text-sm">sales@polcode.com</a>
+                </div>
+                <div>
+                    <h4 className="font-bold text-gray-800">Company</h4>
+                    <div className="mt-4 flex flex-col space-y-2 text-sm">
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">About</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Our process</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Workshops</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Projects</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Blog</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Careers</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Contact Us</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Privacy Policy</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Tech Radar</a>
+                    </div>
+                </div>
+                 <div>
+                    <h4 className="font-bold text-gray-800">Services</h4>
+                    <div className="mt-4 flex flex-col space-y-2 text-sm">
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Web Development</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Mobile Development</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Product Design</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Software Audit</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Team Extension</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Frontend Development</a>
+                        <a href="#" className="text-gray-600 hover:text-brand-purple">Backend Development</a>
+                    </div>
+                </div>
+                 <div className="md:col-span-2 lg:col-span-1 space-y-6 text-sm">
+                     <div>
+                        <p className="font-bold text-gray-800 text-lg">Clutch</p>
+                        <div className="flex items-center gap-1 mt-1">
+                            {Array.from({length: 5}).map((_, i) => <Star key={i} size={20} className="text-red-500 fill-current" />)}
+                            <span className="font-bold text-gray-800 ml-1">5</span>
+                        </div>
+                     </div>
+                     <div>
+                         <p className="font-bold text-gray-800 text-lg">Upwork</p>
+                         <p className="text-gray-600 mt-1">1MLN+ Logged Hours</p>
+                         <p className="text-gray-600">99% Job Success</p>
+                     </div>
+                     <div className="flex items-center gap-4">
+                         <div className="font-semibold text-gray-800">Twilio</div>
+                         <p className="text-gray-600">Technology Partner</p>
+                     </div>
+                      <div className="flex items-center gap-4">
+                         <div className="font-semibold text-gray-800">Adobe <span className="block font-normal">Solution Partner <span className="text-xs">BRONZE</span></span></div>
+                         <p className="text-gray-600">Technology Partner</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+        <div className="mt-16 border-t">
+            <div className="container mx-auto px-6 py-6 flex justify-between items-center text-sm text-gray-500">
+                <p>2025 Polcode Sp. z o.o. All rights reserved.</p>
+                <div className="flex items-center gap-4">
+                    <a href="#" className="hover:text-brand-purple"><Facebook size={20}/></a>
+                    <a href="#" className="hover:text-brand-purple"><Linkedin size={20}/></a>
+                    <a href="#" className="hover:text-brand-purple"><Instagram size={20}/></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+);
+
+
+// --- Main Page ---
+export default function Home() {
+  return (
+    <div className="bg-white">
+      <Header />
+      <main>
+        <Hero />
+        <Services />
+        <ConsultationCTA />
+        <Testimonials />
+        <Partners />
+        <Projects />
+        <Stats />
+        <WhyChooseUs />
+        <Process />
+        <Blog />
+        <ContactCTA />
+      </main>
+      <Footer />
     </div>
   );
 }
