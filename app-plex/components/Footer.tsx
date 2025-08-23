@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image'; // <-- 1. Import the Image component
 import { servicesData } from '@/lib/data';
 
 export default function Footer() {
@@ -7,9 +8,22 @@ export default function Footer() {
       <div className="container py-10">
         <div className="grid md:grid-cols-4 gap-6">
           <div className="md:col-span-2">
-            <Link href="/" className="text-xl md:text-[22px] font-semibold tracking-tight text-gray-900 dark:text-white">
-              App <span className="text-gblue dark:text-gblue-dark">Plex</span>
+            
+            {/* --- 2. ADDED LOGO SECTION --- */}
+            <Link href="/" className="flex items-center gap-3">
+              <Image
+                src="/appplexlogo.jpg"
+                alt="AppPlex Logo"
+                width={48}
+                height={48}
+                className="h-12 w-12 rounded-full object-cover border border-gray-300 dark:border-gray-700"
+              />
+              <span className="text-xl md:text-[22px] font-semibold tracking-tight text-gray-900 dark:text-white">
+                App <span className="text-gblue dark:text-gblue-dark">Plex</span>
+              </span>
             </Link>
+            {/* --- END LOGO SECTION --- */}
+
             <p className="mt-3 text-gray-700 dark:text-gray-300 max-w-md">
               We design and build delightful digital products for startups and enterprises.
             </p>
@@ -17,7 +31,8 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">Company</h4>
             <ul className="space-y-1">
-              <li><Link href="/#about" className="text-gray-700 dark:text-gray-300 hover:text-gblue dark:hover:text-gblue-dark">About</Link></li>
+              {/* NOTE: Updated Link to /about instead of /#about for consistency */}
+              <li><Link href="/about" className="text-gray-700 dark:text-gray-300 hover:text-gblue dark:hover:text-gblue-dark">About</Link></li>
               <li><Link href="/blog" className="text-gray-700 dark:text-gray-300 hover:text-gblue dark:hover:text-gblue-dark">Blog</Link></li>
               <li><Link href="/contact" className="text-gray-700 dark:text-gray-300 hover:text-gblue dark:hover:text-gblue-dark">Contact</Link></li>
             </ul>

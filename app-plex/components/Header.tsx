@@ -1,29 +1,26 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useTheme } from './ThemeProvider';
 import { AnimatePresence, motion } from 'framer-motion';
 import ServicesDropdown from './navigation/ServicesDropdown';
-import ProjectsDropdown from './navigation/ProjectDropdown';
+import ProjectsDropdown from './navigation/ProjectDropdown'; // <-- Corrected import name
 import { servicesData } from '@/lib/data';
 
 /**
  * A self-contained component for the theme toggle button.
- * It uses the useTheme hook to access and modify the global theme state.
  */
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
 
-  // Ensure the component is mounted on the client before rendering,
-  // to avoid hydration mismatch errors with the server.
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   if (!isMounted) {
-    // Render a placeholder or nothing on the server
     return <div className="p-2 mr-1.5 w-[40px] h-[40px]"></div>;
   }
 
@@ -42,7 +39,6 @@ const ThemeToggle = () => {
   );
 };
 
-// Define a type for the dropdown state for better type safety
 type DropdownType = 'services' | 'projects' | null;
 
 /**
@@ -53,17 +49,14 @@ export default function Header() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<DropdownType>(null);
 
-  // Effect to handle header background change on scroll
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
-    // Cleanup function to remove the event listener
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Helper function to close all menus, useful for mobile navigation
   const closeAllMenus = () => {
     setMobileMenuOpen(false);
     setOpenDropdown(null);
@@ -71,18 +64,30 @@ export default function Header() {
 
   return (
     <header
-      onMouseLeave={() => setOpenDropdown(null)} // Close dropdown when mouse leaves the header area
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+      onMouseLeave={() => setOpenDropdown(null)}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
           ? 'bg-white/90 dark:bg-gsurface-dark/90 backdrop-blur shadow-sm border-b border-gray-200/70 dark:border-white/10'
           : 'bg-transparent'
-      }`}
+        }`}
     >
       <div className="container">
         <div className="flex items-center justify-between h-16 md:h-[68px]">
-          <Link href="/" onClick={closeAllMenus} className="text-xl md:text-[22px] font-semibold tracking-tight text-gray-900 dark:text-white">
-            App <span className="text-gblue dark:text-gblue-dark">Plex</span>
+
+          {/* --- CORRECTED LOGO SECTION --- */}
+          <Link href="/" onClick={closeAllMenus} className="flex items-center gap-3">
+            <Image
+              src="/appplexlogo.jpg"
+              alt="AppPlex Logo"
+              width={48} // Matched to className size for optimal performance
+              height={48} // Matched to className size for optimal performance
+              className="h-12 w-12 rounded-full object-cover border border-gray-300 dark:border-gray-700"
+            />
+            <span className="text-xl md:text-[22px] font-semibold tracking-tight text-gray-900 dark:text-white">
+              App <span className="text-gblue dark:text-gblue-dark">Plex</span>
+            </span>
           </Link>
+          {/* --- END CORRECTED LOGO SECTION --- */}
+
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
@@ -104,7 +109,7 @@ export default function Header() {
             <Link href="/blog" onMouseEnter={() => setOpenDropdown(null)} className="text-gray-800 dark:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-white/5 px-3 py-2 rounded-pill text-sm font-medium transition-colors">Blog</Link>
             <Link href="/contact" onMouseEnter={() => setOpenDropdown(null)} className="text-gray-800 dark:text-gray-200 hover:bg-gray-100/80 dark:hover:bg-white/5 px-3 py-2 rounded-pill text-sm font-medium transition-colors">Contact</Link>
           </nav>
-          
+
           <div className="flex items-center">
             <ThemeToggle />
             <div className="md:hidden">
@@ -125,6 +130,7 @@ export default function Header() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden overflow-hidden bg-white/95 dark:bg-gsurface-dark/95 backdrop-blur border-b border-gray-200/70 dark:border-white/10"
           >
+            {/* ... Mobile menu content remains the same ... */}
             <div className="container px-2 pt-2 pb-3 space-y-1">
               <Link href="/" onClick={closeAllMenus} className="block px-3 py-2 rounded-xl text-base font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-100/80 dark:hover:bg-white/5">Home</Link>
               <details className="group px-3 rounded-xl [&_summary::-webkit-details-marker]:hidden">

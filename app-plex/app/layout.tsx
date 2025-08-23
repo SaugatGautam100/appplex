@@ -3,6 +3,7 @@ import { Roboto } from 'next/font/google';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import WhatsAppWidget from '@/components/WhatsAppWidget'; // <-- 1. IMPORT THE WIDGET
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -11,7 +12,7 @@ const roboto = Roboto({
 });
 
 export const metadata = {
-  title: 'App Plex — A website and application development agency',
+  title: 'App Plex — Classy Google-style',
   description: 'Building digital experiences that inspire. Web, mobile, and eCommerce development with world-class design.',
 };
 
@@ -22,8 +23,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      {/* ... <head> section ... */}
       <head>
-        {/* Google Material Symbols */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -38,6 +39,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <WhatsAppWidget /> {/* <-- 2. ADD THE WIDGET COMPONENT HERE */}
         </ThemeProvider>
       </body>
     </html>
