@@ -93,7 +93,7 @@ export default function ContactPage() {
             </h2>
             <div className="w-full h-[350px] md:h-[450px] rounded-lg overflow-hidden bg-gray-200 dark:bg-neutral-900">
               <iframe
-                src="https://www.google.com/maps?q=27.6830624,85.3873022&z=14&output=embed"
+                src="https://maps.app.goo.gl/Qgz8da92KVanuG3T7"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
