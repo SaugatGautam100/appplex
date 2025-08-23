@@ -6,7 +6,7 @@ export default function ProjectsSection() {
       <div className="container">
         <div className="text-center mb-8 md:mb-10">
           <h2 className="text-3xl md:text-[34px] font-semibold tracking-tight text-gray-900 dark:text-white">
-            Recent work
+            Recent works
           </h2>
           <p className="mt-3 text-[16px] md:text-[17px] text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             A snapshot of products we’ve shipped.

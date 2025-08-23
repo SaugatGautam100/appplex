@@ -31,6 +31,7 @@ export default function BlogPage() {
                   </Link>
                 </article>
               ))}
+              
             </div>
             <aside className="lg:col-span-1">
               <div className="sticky top-24">

@@ -16,8 +16,8 @@ export interface BlogPost {
 }
 
 export const servicesData: Service[] = [
-    { slug: 'web-development',      icon: 'code',              title: 'Web Development',      description: 'High-performance web apps tailored to your needs.', details: 'Our web development team builds robust, scalable, and secure web applications. We leverage modern frameworks to create seamless digital experiences that delight users and move business metrics.' },
-    { slug: 'frontend-development',  icon: 'design_services',   title: 'Frontend Development', description: 'Intuitive user interfaces with modern frameworks.', details: 'We create beautiful and responsive user interfaces. Our expertise in React, Next.js, and Vue ensures your app is fast, accessible, and engaging across devices.' },
+    { slug: 'web-development',      icon: 'code',              title: 'Web Development',      description: 'High-performance web apps tailored to your needs.', details: 'Our web development team builds robust, scalable, and secure web applications. We leverage modern frameworkss to create seamless digital experiences that delight users and move business metrics.' },
+    { slug: 'frontend-development',  icon: 'design_services',   title: 'Frontend Development', description: 'Intuitive user interfaces with modern frameworkss.', details: 'We create beautiful and responsive user interfaces. Our expertise in React, Next.js, and Vue ensures your app is fast, accessible, and engaging across devices.' },
     { slug: 'backend-development',   icon: 'dns',               title: 'Backend Development',  description: 'Robust and scalable server-side logic and APIs.', details: 'We build powerful server-side applications, databases, and APIs using Node.js, Python, and Go — with reliability, performance, and security in mind.' },
     { slug: 'ecommerce-development', icon: 'shopping_cart',     title: 'eCommerce Development',description: 'Powerful online stores that drive sales.', details: 'We create feature-rich eCommerce platforms that deliver smooth shopping experiences and operational efficiency — with payments, analytics, and custom integrations.' },
     { slug: 'mobile-development',    icon: 'smartphone',        title: 'Mobile Development',   description: 'Native and cross-platform apps for iOS & Android.', details: 'From concept to launch, we build intuitive, performant, and visually polished apps for iOS and Android — using native or cross‑platform stacks.' },
@@ -25,12 +25,8 @@ export const servicesData: Service[] = [
 ];
 
 export const blogPostsData: BlogPost[] = [
-    { slug: 'e-commerce-migration', title: 'Signs Your E‑Commerce Business Needs A Platform Migration', image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+1', category: 'E‑Commerce',      date: 'Aug 18, 2025', author: 'Jane Doe' },
-    { slug: 'magento-support-end',  title: 'Magento 2.4.5 End of Support: What It Means',               image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+2', category: 'Magento',         date: 'Aug 15, 2025', author: 'John Smith' },
-    { slug: 'python-versatility',   title: 'The Versatility of Python — Why It’s So Popular',           image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+3', category: 'Python',          date: 'Aug 12, 2025', author: 'Alex Johnson' },
-    { slug: 'eu-cybersecurity-act', title: 'Is Your E‑commerce Ready for the EU’s New Act?',            image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+4', category: 'Security',        date: 'Aug 10, 2025', author: 'Emily White' },
-    { slug: 'headless-cms-benefits',title: 'Unlocking Flexibility: The Benefits of a Headless CMS',    image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+5', category: 'Web Development', date: 'Aug 05, 2025', author: 'Chris Green' },
-    { slug: 'ai-in-development',    title: 'How AI Is Transforming the Software Development Lifecycle', image: 'https://placehold.co/800x480/e5e7eb/1f2937?text=Blog+6', category: 'AI',              date: 'Aug 01, 2025', author: 'Jane Doe' },
+    { slug: 'Plexify Use Cases', title: 'Signs Your E‑Commerce Business Needs A great Use Case', image: '/projectlogos/plexify.png', category: 'E‑Commerce',      date: 'Aug 18, 2025', author: 'Saugat Gautam' },
+   
 ];
 
 // ... (keep your existing Service and BlogPost interfaces)

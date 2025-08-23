@@ -6,7 +6,7 @@ export default function ProjectsPage() {
     <>
       <div className="pt-10 md:pt-14">
         <div className="container py-6 text-center">
-          <h1 className="text-3xl md:text-[34px] font-semibold tracking-tight">Our Work</h1>
+          <h1 className="text-3xl md:text-[34px] font-semibold tracking-tight">Our works</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">A snapshot of products we’ve shipped with care and precision.</p>
         </div>
       </div>

@@ -301,7 +301,7 @@ const KEYWORDS: string[] = [
   'swagger openapi nepal',
   'microservices nepal',
   'monorepo turborepo nepal',
-  'nx workspace nepal',
+  'nx worksspace nepal',
   'tailwind css developer nepal',
   'typescript developer nepal',
   'storybook ui nepal',

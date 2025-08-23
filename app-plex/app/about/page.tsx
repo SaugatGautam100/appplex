@@ -8,7 +8,7 @@ export default function AboutPage() {
             About App Plex
           </h1>
           <p className="mt-2 text-[16px] md:text-[17px] text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            We are a team of designers, engineers, and product folks working in
+            We are a team of designers, engineers, and product folks worksing in
             lockstep to ship quality software.
           </p>
         </div>
