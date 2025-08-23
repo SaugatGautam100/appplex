@@ -1,47 +1,41 @@
-import './globals.css';
-import { Roboto } from 'next/font/google';
-import { ThemeProvider } from '@/components/ThemeProvider';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import WhatsAppWidget from '@/components/WhatsAppWidget'; // <-- 1. IMPORT THE WIDGET
+import { Metadata } from 'next';
 
-const roboto = Roboto({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '700'],
-  variable: '--font-roboto',
-});
-
-export const metadata = {
-  title: 'App Plex — Classy Google-style',
-  description: 'Building digital experiences that inspire. Web, mobile, and eCommerce development with world-class design.',
+export const metadata: Metadata = {
+  // Title Tag: The most important SEO tag.
+  title: {
+    default: 'Website & App Development Company in Nepal - App Plex',
+    template: '%s - App Plex Nepal',
+  },
+  // Description: The snippet shown in Google search results.
+  description: 'App Plex is a top-rated website and mobile app development company in Nepal. We build high-performance web, mobile, and e-commerce solutions with world-class design for businesses in Kathmandu and beyond.',
+  // Keywords: While less important now, it's still good practice.
+  keywords: [
+    'website development company in Nepal',
+    'app development Nepal',
+    'web design Kathmandu',
+    'ecommerce website Nepal',
+    'software company in Nepal',
+    'IT company in Nepal',
+    'mobile app price in Nepal',
+  ],
+  // Canonical URL and Open Graph for social sharing
+  metadataBase: new URL('https://www.your-app-plex-domain.com'), // <-- IMPORTANT: Replace with your actual domain
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Top Website & App Development Company in Nepal - App Plex',
+    description: 'Expert web, mobile, and e-commerce solutions from App Plex, a leading software company in Kathmandu, Nepal.',
+    url: '/',
+    siteName: 'App Plex Nepal',
+    images: [
+      {
+        url: '/og-image.jpg', // Create an engaging image (1200x630px) and place it in your /public folder
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
 };
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      {/* ... <head> section ... */}
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className={`${roboto.variable} bg-gsurface-light dark:bg-gsurface-dark text-gray-900 dark:text-gray-100 font-sans antialiased selection:bg-gblue/20`}>
-        <ThemeProvider>
-          <Header />
-          <main className="pt-[64px] md:pt-[76px]">
-            {children}
-          </main>
-          <Footer />
-          <WhatsAppWidget /> {/* <-- 2. ADD THE WIDGET COMPONENT HERE */}
-        </ThemeProvider>
-      </body>
-    </html>
-  );
-}

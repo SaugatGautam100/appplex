@@ -141,7 +141,7 @@ export default function Header() {
                 <ul className="mt-2 pl-4 space-y-1 border-l border-gray-200 dark:border-white/10">
                   {servicesData.map(s => (
                     <li key={s.slug}>
-                      <Link href={`/services/${s.slug}`} onClick={closeAllMenus} className="block py-1.5 pl-2 text-gray-700 dark:text-gray-300 hover:text-gblue dark:hover:text-gblue-dark">{s.title}</Link>
+                      <Link href={`/service/${s.slug}`} onClick={closeAllMenus} className="block py-1.5 pl-2 text-gray-700 dark:text-gray-300 hover:text-gblue dark:hover:text-gblue-dark">{s.title}</Link>
                     </li>
                   ))}
                 </ul>
