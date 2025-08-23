@@ -7,6 +7,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import WhatsAppWidget from '@/components/WhatsAppWidget';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import SplashScreen from '@/components/SplashScreen'; // <-- Splash loader
+
 const roboto = Roboto({
   subsets: ['latin'],
   weight: ['300', '400', '500', '700'],
@@ -422,12 +424,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-
         {/* LocalBusiness JSON-LD for Local SEO */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(LOCAL_BUSINESS_JSON) }}
         />
+
+        {/* Hide splash if JS is disabled */}
+        <noscript>
+          <style>{`#appplex-splash{display:none !important}`}</style>
+        </noscript>
 
         {/* Fonts and Icons */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -441,6 +447,9 @@ export default function RootLayout({
         className={`${roboto.variable} bg-gsurface-light dark:bg-gsurface-dark text-gray-900 dark:text-gray-100 font-sans antialiased selection:bg-gblue/20`}
       >
         <ThemeProvider>
+          {/* Splash loader (first page load) */}
+          <SplashScreen />
+
           <Header />
           <main className="pt-[64px] md:pt-[76px]">{children}</main>
           <Footer />
