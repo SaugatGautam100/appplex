@@ -15,7 +15,7 @@ export default function ProjectsPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {projectsData.map((project) => (
               <div key={project.slug} className="group relative overflow-hidden rounded-2xl bg-white dark:bg-white/5 border border-gray-200/70 dark:border-white/10 shadow-google transition-all hover:shadow-google-lg">
-                <Image src={`https://placehold.co/800x600?text=${encodeURIComponent(project.title)}`} alt={project.title} width={800} height={600} className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+                <Image src={project.imageUrl || `https://placehold.co/800x600?text=${encodeURIComponent(project.title)}`} alt={project.title} width={800} height={600} className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
                 <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
                   <p className="text-sm text-gray-200">{project.category}</p>
                   <h3 className="text-xl font-medium text-white mt-0.5">{project.title}</h3>

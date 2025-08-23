@@ -16,45 +16,45 @@ export default function ProjectsSection() {
           {/* Project Card 1 */}
           <div className="group relative overflow-hidden rounded-2xl bg-white dark:bg-white/5 border border-gray-200/70 dark:border-white/10 shadow-google transition-all hover:shadow-google-lg">
             <Image
-              src="https://placehold.co/800x600/1a73e8/ffffff?text=Fintech+App"
-              alt="Fintech Mobile App"
+              src="/projectlogos/vibe-music.png"
+              alt="Vibe Music App"
               width={800}
               height={600}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
               <p className="text-sm text-gray-200 dark:text-gray-300">Mobile Development</p>
-              <h3 className="text-xl font-medium text-white mt-0.5">Fintech Mobile App</h3>
+              <h3 className="text-xl font-medium text-white mt-0.5">Vibe Music</h3>
             </div>
           </div>
 
           {/* Project Card 2 */}
           <div className="group relative overflow-hidden rounded-2xl bg-white dark:bg-white/5 border border-gray-200/70 dark:border-white/10 shadow-google transition-all hover:shadow-google-lg">
             <Image
-              src="https://placehold.co/800x600/10b981/ffffff?text=SaaS+Dashboard"
-              alt="SaaS Platform Dashboard"
+              src="/projectlogos/sajilo-interior.jpeg"
+              alt="Sajilo Interior Dashboard"
               width={800}
               height={600}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
               <p className="text-sm text-gray-200 dark:text-gray-300">Web Development</p>
-              <h3 className="text-xl font-medium text-white mt-0.5">SaaS Platform Dashboard</h3>
+              <h3 className="text-xl font-medium text-white mt-0.5">Sajilo Interior Nepal</h3>
             </div>
           </div>
 
           {/* Project Card 3 */}
           <div className="group relative overflow-hidden rounded-2xl bg-white dark:bg-white/5 border border-gray-200/70 dark:border-white/10 shadow-google transition-all hover:shadow-google-lg">
             <Image
-              src="https://placehold.co/800x600/f59e0b/ffffff?text=Marketplace"
-              alt="eCommerce Marketplace"
+              src="projectlogos/plexify.png"
+              alt="Plexify"
               width={800}
               height={600}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
             <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
-              <p className="text-sm text-gray-200 dark:text-gray-300">eCommerce</p>
-              <h3 className="text-xl font-medium text-white mt-0.5">eCommerce Marketplace</h3>
+              <p className="text-sm text-gray-200 dark:text-gray-300">E-Commerce Development</p>
+              <h3 className="text-xl font-medium text-white mt-0.5">Plexify</h3>
             </div>
           </div>
         </div>

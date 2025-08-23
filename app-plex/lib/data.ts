@@ -41,13 +41,14 @@ export interface Project {
   title: string;
   category: string;
   description: string;
+  imageUrl?: string; // Optional, for projects with images
 }
 
 // ... (keep your existing servicesData and blogPostsData arrays)
 
 export const projectsData: Project[] = [
-  { slug: 'fintech-app', icon: 'account_balance', title: 'Fintech Mobile App', category: 'Mobile', description: 'A secure mobile banking and investment platform.' },
-  { slug: 'saas-dashboard', icon: 'dashboard', title: 'SaaS Platform Dashboard', category: 'Web', description: 'Analytics and management for B2B software.' },
-  { slug: 'ecommerce-marketplace', icon: 'storefront', title: 'eCommerce Marketplace', category: 'eCommerce', description: 'A multi-vendor platform for handmade goods.' },
-  { slug: 'health-tracker', icon: 'health_and_safety', title: 'Wellness Health Tracker', category: 'Mobile', description: 'Monitor fitness, nutrition, and mental well-being.' },
+  { slug: 'vibe-music', icon: 'account_balance', title: 'Vibe Music', category: 'Mobile', description: 'A music listening app that plays the best audio quality musics.', imageUrl: '/projectlogos/plexify.png' },
+  { slug: 'sajilo-interior-nepal', icon: 'dashboard', title: 'Sajilo Interior Nepal', category: 'Web', description: 'A interior company for interior design.', imageUrl: '/projectlogos/sajilo-interior.jpeg' },
+  { slug: 'plexify', icon: 'storefront', title: 'Plexify', category: 'eCommerce', description: 'A e-commerce website for getting all daily used products.', imageUrl: '/projectlogos/vibe-music.png' },
+  { slug: 'plexer', icon: 'health_and_safety', title: 'Plexer', category: 'Mobile', description: 'A application for booking rides and services.', imageUrl: '/projectlogos/plexer.png' },
 ];
