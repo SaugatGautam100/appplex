@@ -43,8 +43,8 @@ export interface Project {
 // ... (keep your existing servicesData and blogPostsData arrays)
 
 export const projectsData: Project[] = [
-  { slug: 'vibe-music', icon: 'account_balance', title: 'Vibe Music', category: 'Mobile', description: 'A music listening app that plays the best audio quality musics.', imageUrl: '/projectlogos/plexify.png' },
+  { slug: 'vibe-music', icon: 'account_balance', title: 'Vibe Music', category: 'Mobile', description: 'A music listening app that plays the best audio quality musics.', imageUrl: '/projectlogos/vibe-music.png' },
   { slug: 'sajilo-interior-nepal', icon: 'dashboard', title: 'Sajilo Interior Nepal', category: 'Web', description: 'A interior company for interior design.', imageUrl: '/projectlogos/sajilo-interior.jpeg' },
-  { slug: 'plexify', icon: 'storefront', title: 'Plexify', category: 'eCommerce', description: 'A e-commerce website for getting all daily used products.', imageUrl: '/projectlogos/vibe-music.png' },
+  { slug: 'plexify', icon: 'storefront', title: 'Plexify', category: 'eCommerce', description: 'A e-commerce website for getting all daily used products.', imageUrl: '/projectlogos/plexify.png' },
   { slug: 'plexer', icon: 'health_and_safety', title: 'Plexer', category: 'Mobile', description: 'A application for booking rides and services.', imageUrl: '/projectlogos/plexer.png' },
 ];
