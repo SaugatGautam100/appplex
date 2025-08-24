@@ -14,6 +14,7 @@ export default function ContactPage() {
           </p>
         </div>
       </div>
+
       <div className="py-10 bg-gray-50 dark:bg-[#111318]">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-6 md:gap-8 items-start">
@@ -85,24 +86,25 @@ export default function ContactPage() {
             {/* Contact Form */}
             <ContactForm />
           </div>
+        </div>
 
-          {/* Google Map Embed */}
-          <div className="mt-8">
+        {/* Full-width Map (outside container) */}
+        <div className="mt-8">
+          <div className="container">
             <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-4">
               Find us on the map
             </h2>
-            <div className="w-full h-[350px] md:h-[450px] rounded-lg overflow-hidden bg-gray-200 dark:bg-neutral-900">
-              <iframe
-                src="https://maps.app.goo.gl/Qgz8da92KVanuG3T7"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Google Map - Madhyapur Thimi"
-              />
-            </div>
+          </div>
+          <div className="w-full h-[350px] md:h-[450px] overflow-hidden bg-gray-200 dark:bg-neutral-900">
+            <iframe
+              className="w-full h-full block"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28264.318754273067!2d85.3583229431158!3d27.685163376459833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1a419f80aa67%3A0x288ab8841508315f!2sMadhyapur%20Thimi!5e0!3m2!1sen!2snp!4v1756049354396!5m2!1sen!2snp"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Google Map - Madhyapur Thimi"
+              style={{ border: 0 }}
+            />
           </div>
         </div>
       </div>
