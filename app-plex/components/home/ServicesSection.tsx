@@ -1,5 +1,7 @@
+'use client';
 import Link from 'next/link';
 import { servicesData } from '@/lib/data';
+import { motion } from 'framer-motion';
 
 export default function ServicesSection() {
   return (
@@ -21,9 +23,19 @@ export default function ServicesSection() {
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="h-10 w-10 rounded-xl bg-gblue/10 dark:bg-gblue/15 flex items-center justify-center">
-                  <span className="material-symbols-rounded text-gblue dark:text-gblue-dark">
+                  <motion.span
+                  animate={{
+                    y: 1,
+                    scale: 1.5
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    repeatType: 'mirror',
+                    duration: 0.7
+                  }}
+                   className="material-symbols-rounded text-gblue dark:text-gblue-dark">
                     {service.icon}
-                  </span>
+                  </motion.span>
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                   {service.title}
@@ -37,9 +49,19 @@ export default function ServicesSection() {
                 className="inline-flex items-center gap-1.5 text-gblue dark:text-gblue-dark font-medium"
               >
                 Learn more
-                <span className="material-symbols-rounded text-[18px]">
+                <motion.span
+                  animate={{
+                   x: 5,
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                    duration: 1
+                  }}
+
+                  className="material-symbols-rounded text-[18px]">
                   arrow_forward
-                </span>
+                </motion.span>
               </Link>
             </div>
           ))}

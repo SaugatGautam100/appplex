@@ -19,13 +19,15 @@ type Props = {
 
 export default function SplashScreen({
   logoSrc = '/appplexlogo.jpg',
-  minDuration = 3000, // 3 seconds by default
+  minDuration = 3000, // 3 seconds
 }: Props) {
   const [visible, setVisible] = useState(true);
 
-  // Normalize to a plain boolean (fixes TS: boolean | null -> boolean)
-  const prefersReducedMotion = useReducedMotion();
-  const isReducedMotion = prefersReducedMotion ?? false;
+  // Avoid hydration mismatch: defer reduced-motion until after mount
+  const reducedPref = useReducedMotion() as boolean | null;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const isReducedMotion = mounted ? !!reducedPref : false;
 
   useEffect(() => {
     const start = performance.now();
@@ -88,7 +90,7 @@ export default function SplashScreen({
           onPointerMove={onPointerMove}
           onPointerLeave={onPointerLeave}
         >
-          {/* Scanline + subtle noise overlay */}
+          {/* Scanline overlay */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 mix-blend-soft-light opacity-[0.08]"
@@ -129,7 +131,7 @@ export default function SplashScreen({
                 }}
               />
 
-              {/* Aurora blobs */}
+              {/* Aurora glows */}
               {!isReducedMotion && (
                 <>
                   <Aurora
@@ -165,23 +167,23 @@ export default function SplashScreen({
                 reduceMotion={isReducedMotion}
               />
 
-              {/* Multi orbits with electrons */}
+              {/* Multi orbits */}
               <Orbit size={300} duration={12} tilt={12} dotColor="#60A5FA" reduceMotion={isReducedMotion} />
               <Orbit size={270} duration={9} tilt={-28} dotColor="#A78BFA" reverse reduceMotion={isReducedMotion} />
               <Orbit size={240} duration={7} tilt={48} dotColor="#22D3EE" reduceMotion={isReducedMotion} />
 
-              {/* Drawing network lines */}
+              {/* Drawing network */}
               <Network active={!isReducedMotion} />
 
-              {/* Radar sweep + comet trail */}
+              {/* Radar sweep + comets */}
               <SweepRing radius={155} width={30} color="rgba(34,211,238,0.25)" speed={7} reduceMotion={isReducedMotion} />
               <Comet radius={135} length={90} speed={3.2} delay={0.2} color="rgba(59,130,246,0.9)" reduceMotion={isReducedMotion} />
               <Comet radius={115} length={70} speed={2.4} delay={1.1} color="rgba(167,139,250,0.85)" reverse reduceMotion={isReducedMotion} />
 
-              {/* Particle sparkle field */}
+              {/* Sparkle field */}
               <Particles dense={!isReducedMotion} />
 
-              {/* Center: logo, glow, and pulse rings */}
+              {/* Center logo + pulse */}
               <motion.div
                 className="relative z-10 flex items-center justify-center rounded-xl"
                 initial={{ scale: 0.95, filter: 'drop-shadow(0 0 0px rgba(59,130,246,0))' }}
@@ -199,7 +201,6 @@ export default function SplashScreen({
                 transition={{ duration: 2.4, repeat: isReducedMotion ? 0 : Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
                 style={{ transformStyle: 'preserve-3d' }}
               >
-                {/* Pulsing halo */}
                 <PulseRing size={170} color="rgba(59,130,246,0.28)" />
                 <PulseRing size={210} color="rgba(167,139,250,0.20)" delay={0.4} />
 
@@ -212,7 +213,6 @@ export default function SplashScreen({
                   className="rounded-md relative"
                 />
 
-                {/* Flare sweep over logo */}
                 {!isReducedMotion && <LogoFlare />}
               </motion.div>
             </motion.div>
@@ -265,7 +265,7 @@ function ElectricRing({
   reduceMotion,
 }: {
   size?: number;
-  thicknessPct?: number; // ring thickness as % of radius
+  thicknessPct?: number;
   speed?: number;
   reverse?: boolean;
   colors?: string[];
@@ -349,7 +349,6 @@ function Orbit({
 }
 
 function Network({ active = true }: { active?: boolean }) {
-  // Animated bezier lines "drawing in" and looping
   const line = (d: string, delay = 0) => (
     <motion.path
       d={d}
