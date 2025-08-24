@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import {
   motion,
   AnimatePresence,
@@ -22,7 +22,10 @@ export default function SplashScreen({
   minDuration = 3000, // 3 seconds by default
 }: Props) {
   const [visible, setVisible] = useState(true);
-  const reduceMotion = useReducedMotion();
+
+  // Normalize to a plain boolean (fixes TS: boolean | null -> boolean)
+  const prefersReducedMotion = useReducedMotion();
+  const isReducedMotion = prefersReducedMotion ?? false;
 
   useEffect(() => {
     const start = performance.now();
@@ -59,7 +62,7 @@ export default function SplashScreen({
   const springRy = useSpring(ry, { stiffness: 120, damping: 14, mass: 0.3 });
 
   const onPointerMove = (e: React.PointerEvent) => {
-    if (reduceMotion) return;
+    if (isReducedMotion) return;
     const x = e.clientX / window.innerWidth - 0.5; // -0.5 .. 0.5
     const y = e.clientY / window.innerHeight - 0.5;
     mx.set(x * 1.2);
@@ -105,9 +108,9 @@ export default function SplashScreen({
               }}
               initial={{ scale: 0.98 }}
               animate={{
-                scale: reduceMotion ? 1 : [0.98, 1.02, 1],
+                scale: isReducedMotion ? 1 : [0.98, 1.02, 1],
               }}
-              transition={{ duration: 2.4, repeat: reduceMotion ? 0 : Infinity, repeatType: 'mirror' }}
+              transition={{ duration: 2.4, repeat: isReducedMotion ? 0 : Infinity, repeatType: 'mirror' }}
             >
               {/* Blueprint grid + radial vignette */}
               <div
@@ -127,7 +130,7 @@ export default function SplashScreen({
               />
 
               {/* Aurora blobs */}
-              {!reduceMotion && (
+              {!isReducedMotion && (
                 <>
                   <Aurora
                     size={420}
@@ -146,32 +149,45 @@ export default function SplashScreen({
               )}
 
               {/* Electric conic rings */}
-              <ElectricRing size={300} thicknessPct={22} speed={8} colors={['#3B82F6', '#A78BFA', '#22D3EE']} reduceMotion={reduceMotion} />
-              <ElectricRing size={260} thicknessPct={18} speed={6} colors={['#A78BFA', '#3B82F6']} reverse reduceMotion={reduceMotion} />
+              <ElectricRing
+                size={300}
+                thicknessPct={22}
+                speed={8}
+                colors={['#3B82F6', '#A78BFA', '#22D3EE']}
+                reduceMotion={isReducedMotion}
+              />
+              <ElectricRing
+                size={260}
+                thicknessPct={18}
+                speed={6}
+                colors={['#A78BFA', '#3B82F6']}
+                reverse
+                reduceMotion={isReducedMotion}
+              />
 
               {/* Multi orbits with electrons */}
-              <Orbit size={300} duration={12} tilt={12} dotColor="#60A5FA" reduceMotion={reduceMotion} />
-              <Orbit size={270} duration={9} tilt={-28} dotColor="#A78BFA" reverse reduceMotion={reduceMotion} />
-              <Orbit size={240} duration={7} tilt={48} dotColor="#22D3EE" reduceMotion={reduceMotion} />
+              <Orbit size={300} duration={12} tilt={12} dotColor="#60A5FA" reduceMotion={isReducedMotion} />
+              <Orbit size={270} duration={9} tilt={-28} dotColor="#A78BFA" reverse reduceMotion={isReducedMotion} />
+              <Orbit size={240} duration={7} tilt={48} dotColor="#22D3EE" reduceMotion={isReducedMotion} />
 
               {/* Drawing network lines */}
-              <Network active={!reduceMotion} />
+              <Network active={!isReducedMotion} />
 
               {/* Radar sweep + comet trail */}
-              <SweepRing radius={155} width={30} color="rgba(34,211,238,0.25)" speed={7} reduceMotion={reduceMotion} />
-              <Comet radius={135} length={90} speed={3.2} delay={0.2} color="rgba(59,130,246,0.9)" reduceMotion={reduceMotion} />
-              <Comet radius={115} length={70} speed={2.4} delay={1.1} color="rgba(167,139,250,0.85)" reverse reduceMotion={reduceMotion} />
+              <SweepRing radius={155} width={30} color="rgba(34,211,238,0.25)" speed={7} reduceMotion={isReducedMotion} />
+              <Comet radius={135} length={90} speed={3.2} delay={0.2} color="rgba(59,130,246,0.9)" reduceMotion={isReducedMotion} />
+              <Comet radius={115} length={70} speed={2.4} delay={1.1} color="rgba(167,139,250,0.85)" reverse reduceMotion={isReducedMotion} />
 
               {/* Particle sparkle field */}
-              <Particles dense={!reduceMotion} />
+              <Particles dense={!isReducedMotion} />
 
               {/* Center: logo, glow, and pulse rings */}
               <motion.div
                 className="relative z-10 flex items-center justify-center rounded-xl"
                 initial={{ scale: 0.95, filter: 'drop-shadow(0 0 0px rgba(59,130,246,0))' }}
                 animate={{
-                  scale: reduceMotion ? 1 : [0.95, 1, 0.98, 1],
-                  filter: reduceMotion
+                  scale: isReducedMotion ? 1 : [0.95, 1, 0.98, 1],
+                  filter: isReducedMotion
                     ? 'drop-shadow(0 0 10px rgba(59,130,246,0.35))'
                     : [
                         'drop-shadow(0 0 0px rgba(59,130,246,0.0))',
@@ -180,7 +196,7 @@ export default function SplashScreen({
                         'drop-shadow(0 0 16px rgba(59,130,246,0.45))',
                       ],
                 }}
-                transition={{ duration: 2.4, repeat: reduceMotion ? 0 : Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
+                transition={{ duration: 2.4, repeat: isReducedMotion ? 0 : Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 {/* Pulsing halo */}
@@ -197,7 +213,7 @@ export default function SplashScreen({
                 />
 
                 {/* Flare sweep over logo */}
-                {!reduceMotion && <LogoFlare />}
+                {!isReducedMotion && <LogoFlare />}
               </motion.div>
             </motion.div>
           </div>
@@ -275,7 +291,7 @@ function ElectricRing({
         filter: 'drop-shadow(0 0 12px rgba(59,130,246,0.45))',
         opacity: 0.9,
       }}
-      animate={{ rotate: reduceMotion ? 0 : (reverse ? -360 : 360) }}
+      animate={{ rotate: reduceMotion ? 0 : reverse ? -360 : 360 }}
       transition={{ duration: speed, ease: 'linear', repeat: reduceMotion ? 0 : Infinity }}
     />
   );
@@ -302,7 +318,7 @@ function Orbit({
       aria-hidden
       className="absolute"
       style={{ width: size, height: size, transform: `rotate(${tilt}deg)` }}
-      animate={{ rotate: reverse ? (reduceMotion ? 0 : -360) : (reduceMotion ? 0 : 360) }}
+      animate={{ rotate: reverse ? (reduceMotion ? 0 : -360) : reduceMotion ? 0 : 360 }}
       transition={{ duration, ease: 'linear', repeat: rep }}
     >
       <div
