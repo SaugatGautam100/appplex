@@ -17,7 +17,7 @@ export default function ContactForm() {
   const [resultMessage, setResultMessage] = useState<string>('');
   
   // Access key for Web3Forms (replace with your actual key)
-  const accessKey = "1c277ab3-9606-4981-a272-d6a3ec5b53fe";
+  const accessKey = "21ae30e5-1d52-499a-bee2-6d9916f9fd25";
 
   // Function to validate form fields
   const validateForm = () => {

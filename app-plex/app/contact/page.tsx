@@ -41,31 +41,11 @@ export default function ContactPage() {
                       href="mailto:gautamsaugat100@gmail.com"
                       className="hover:underline"
                     >
-                      gautamsaugat100@gmail.com
+                      appplex100@gmail.com
                     </a>
                   </p>
                 </div>
-                {/* Second Phone Number */}
-                <div className="flex items-center space-x-2">
-                  <FaPhone className="text-gray-600 dark:text-gray-400" />
-                  <p className="text-gray-600 dark:text-gray-400">
-                    <a href="tel:9704896716" className="hover:underline">
-                      +977 9704896716
-                    </a>
-                  </p>
-                </div>
-                {/* Second Email */}
-                <div className="flex items-center space-x-2">
-                  <FaEnvelope className="text-gray-600 dark:text-gray-400" />
-                  <p className="text-gray-600 dark:text-gray-400">
-                    <a
-                      href="mailto:shresthasachendra8@gmail.com"
-                      className="hover:underline"
-                    >
-                      shresthasachendra8@gmail.com
-                    </a>
-                  </p>
-                </div>
+                
                 {/* Google Maps */}
                 <div className="flex items-center space-x-2">
                   <FaMapMarkerAlt className="text-gray-600 dark:text-gray-400" />
