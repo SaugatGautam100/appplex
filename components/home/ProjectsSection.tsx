@@ -57,6 +57,20 @@ export default function ProjectsSection() {
               <h3 className="text-xl font-medium text-white mt-0.5">Plexify</h3>
             </div>
           </div>
+          {/* Project Card 4 */}
+          <div className="group relative overflow-hidden rounded-2xl bg-white dark:bg-white/5 border border-gray-200/70 dark:border-white/10 shadow-google transition-all hover:shadow-google-lg">
+            <Image
+              src="projectlogos/skillhubnepallogo.png"
+              alt="Plexify"
+              width={800}
+              height={600}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
+              <p className="text-sm text-gray-200 dark:text-gray-300">E-Learning Website</p>
+              <h3 className="text-xl font-medium text-white mt-0.5">Skill Hub Nepal</h3>
+            </div>
+          </div>
         </div>
       </div>
     </section>

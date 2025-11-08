@@ -47,4 +47,5 @@ export const projectsData: Project[] = [
   { slug: 'sajilo-interior-nepal', icon: 'dashboard', title: 'Sajilo Interior Nepal', category: 'Web', description: 'A interior company for interior design.', imageUrl: '/projectlogos/sajilo-interior.jpeg' },
   { slug: 'plexify', icon: 'storefront', title: 'Plexify', category: 'eCommerce', description: 'A e-commerce website for getting all daily used products.', imageUrl: '/projectlogos/plexify.png' },
   { slug: 'plexer', icon: 'health_and_safety', title: 'Plexer', category: 'Mobile', description: 'A application for booking rides and services.', imageUrl: '/projectlogos/plexer.png' },
+  { slug: 'skillhubnepal', icon: 'dashboard', title: 'Skill Hub Nepal', category: 'E-learning', description: 'A application for learning courses and earning by doing affiliate marketting.', imageUrl: '/projectlogos/skillhubnepallogo.png' },
 ];
