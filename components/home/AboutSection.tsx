@@ -44,7 +44,7 @@ export default function AboutSection() {
               <span className="material-symbols-rounded text-gblue dark:text-gblue-dark text-[28px] mb-1 inline-block">
                 groups
               </span>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">150+</p>
+              <p className="text-2xl font-semibold text-gray-900 dark:text-white">10+</p>
               <p className="text-xs text-gray-600 dark:text-gray-400">Projects</p>
             </div>
 
@@ -53,7 +53,7 @@ export default function AboutSection() {
               <span className="material-symbols-rounded text-gblue dark:text-gblue-dark text-[28px] mb-1 inline-block">
                 track_changes
               </span>
-              <p className="text-2xl font-semibold text-gray-900 dark:text-white">98%</p>
+              <p className="text-2xl font-semibold text-gray-900 dark:text-white">100%</p>
               <p className="text-xs text-gray-600 dark:text-gray-400">Satisfaction</p>
             </div>
 

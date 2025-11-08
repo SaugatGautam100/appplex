@@ -43,7 +43,7 @@ export default function AboutPage() {
                   groups
                 </span>
                 <p className="text-2xl font-semibold text-gray-900 dark:text-white">
-                  150+
+                  10+
                 </p>
                 <p className="text-xs text-gray-600 dark:text-gray-400">
                   Projects Shipped
@@ -56,7 +56,7 @@ export default function AboutPage() {
                   track_changes
                 </span>
                 <p className="text-2xl font-semibold text-gray-900 dark:text-white">
-                  98%
+                  100%
                 </p>
                 <p className="text-xs text-gray-600 dark:text-gray-400">
                   Client Satisfaction
